@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Dependency directories
+.pnp
+.pnp.js
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE/Editor folders
+.idea/
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# npm packages
+package-lock.json
+yarn.lock
+
+# Coverage reports
+coverage/
