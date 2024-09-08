@@ -4,6 +4,8 @@ import { signup, login } from "../controllers/authController";
 import {
   createContactHandler,
   fetchContactsHandler,
+  editContactHandler,
+  deleteContactHandler,
 } from "../controllers/contactController";
 import authenticate from "../middlewares/authMiddleware";
 
@@ -20,5 +22,9 @@ router.post("/contacts", authenticate, createContactHandler);
 
 // Route to get contacts with pagination (protected)
 router.get("/contacts", authenticate, fetchContactsHandler);
+
+router.put("/contacts", authenticate, editContactHandler);
+
+router.delete("/contacts", authenticate, deleteContactHandler);
 
 export default router;

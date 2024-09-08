@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../apiServices/api";
 import AddContactForm from "./AddContactForm";
-
-interface Contact {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-}
+import { Contact } from "./../types/appTypes";
+import ContactListItem from "./ContactListItem";
 
 const ContactList: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -61,9 +56,12 @@ const ContactList: React.FC = () => {
         <h3>Contacts</h3>
         <ul>
           {contacts.map((contact) => (
-            <li key={contact._id}>
-              {contact.name} - {contact.email}
-            </li>
+            <div key={contact._id}>
+              <ContactListItem
+                contact={contact}
+                onEditSuccess={fetchContacts}
+              />
+            </div>
           ))}
         </ul>
         <div>
