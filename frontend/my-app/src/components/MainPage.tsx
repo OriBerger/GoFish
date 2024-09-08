@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
-import "../styles/ContactList.css"; // Import the CSS file
+import "../styles/MainPage.css"; // Import the CSS file
 import { Contact } from "../types/appTypes"; // Import the shared Contact type
 import AddContactForm from "./AddContactForm";
 import ContactsTable from "./ContactsTable";
+import LogOutButton from "./LogOutButton";
+import StatisticsButton from "./StatisticsButton";
 
-
-const ContactList: React.FC = () => {
+const MainPage: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isAdding, setIsAdding] = useState(false);
 
@@ -39,20 +40,25 @@ const ContactList: React.FC = () => {
 
   const handleAddContact = () => {
     setIsAdding(true);
+    // Optionally open a form to add a contact
   };
 
+  
   const handleContactAdded = () => {
     setIsAdding(false);
     fetchContacts(); // Refresh contacts after adding
   };
-
+  
   return (
-    <div>
-      <button onClick={handleAddContact} className="add-button">Add contact</button>
-      {isAdding && <AddContactForm onContactAdded={handleContactAdded} />}
+    <div className="mainpage-container">
+      <h1>Welcome to the Main Page!</h1>
+      <button onClick={handleAddContact} className="add-contact-button">Add Contact</button>
+      {isAdding && <AddContactForm onContactAdded={handleContactAdded}/>}
       <ContactsTable contacts={contacts} onEdit={handleEdit} onDelete={handleDelete} />
+      <LogOutButton />
+      <StatisticsButton />
     </div>
   );
 };
 
-export default ContactList;
+export default MainPage;

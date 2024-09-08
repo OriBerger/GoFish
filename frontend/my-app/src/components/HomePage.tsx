@@ -1,28 +1,19 @@
-import React from "react";
-import ContactList from "./ContactList";
-import Statistics from "./Statistics";
-import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import "../styles/HomePage.css"; // Import the CSS file
 
-const StyledStatisticsWraper = styled.div`
-  flex: 3;
-  border: 1px solid darkred;
-`;
-const StyledContactListWraper = styled.div`
-  flex: 2;
-  border: 1px solid darkred;
-`;
+const HomePage = () => {
+  const navigate = useNavigate();
 
-const HomePage: React.FC = () => {
   return (
-    <div>
-      <h1>Welcome to the Home Page!</h1>
-      <div style={{ display: "flex" }}>
-        <StyledStatisticsWraper>
-          <Statistics />
-        </StyledStatisticsWraper>
-        <StyledContactListWraper>
-          <ContactList />
-        </StyledContactListWraper>
+    <div className="homepage-container">
+      <h1 className="homepage-title">My-App</h1>
+      <div className="button-container">
+        <button className="btn btn-signin" onClick={() => navigate("/signin")}>
+          Sign In
+        </button>
+        <button className="btn btn-signup" onClick={() => navigate("/signup")}>
+          Sign Up
+        </button>
       </div>
     </div>
   );

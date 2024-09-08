@@ -1,0 +1,32 @@
+body {
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .homepage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+  }
+  
+  h1.homepage-title {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 36px;
+  }
+  
+  .button-container {
+    margin-top: 40px;
+  }
+  
+  button.btn {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
