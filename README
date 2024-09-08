@@ -10,15 +10,6 @@ Frontend:
 Backend:
 
 1. Enter directory bcakend.
-2. Run `npm start`.
+2. Run `npm install`.
 3. Run `npx ts-node src/index.ts`.
 4. You can see resoult in `http://localhost:3001`.
-
-left to do:
-
-1. prevent SQL injection
-2. add contact delete logic
-3. add send evol message to cintacts
-4. create eval message
-5. statistics
-6.

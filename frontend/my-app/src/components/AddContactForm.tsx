@@ -5,36 +5,25 @@ import { Contact } from "../types/appTypes";
 
 interface AddContactFormProps {
   onContactAdded: () => void;
-  contact?: Contact | null;
 }
 
-const AddContactForm: React.FC<AddContactFormProps> = ({ onContactAdded, contact }) => {
-  const [name, setName] = useState(contact?.name || "");
-  const [email, setEmail] = useState(contact?.email || "");
-  const [phone, setPhone] = useState(contact?.phone || "");
-
-  // Reset form fields if contact prop changes
-  useEffect(() => {
-    if (contact) {
-      setName(contact.name);
-      setEmail(contact.email);
-      setPhone(contact.phone);
-    }
-  }, [contact]);
+const AddContactForm: React.FC<AddContactFormProps> = ({ onContactAdded }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (contact) {
-        // Edit existing contact
-        await api.put(`/contacts/${contact._id}`, { name, email, phone });
-      } else {
-        // Add new contact
-        await api.post(`/contacts`, { name, email, phone });
-      }
+      // Add new contact
+      await api.post(`/contacts`, { name, email, phone });
       onContactAdded(); // Refresh contacts and close the form
+      // Clear the form after adding
+      setName("");
+      setEmail("");
+      setPhone("");
     } catch (error) {
-      console.error("Error adding/editing contact:", error);
+      console.error("Error adding contact:", error);
     }
   };
 
@@ -47,7 +36,8 @@ const AddContactForm: React.FC<AddContactFormProps> = ({ onContactAdded, contact
             type="text"
             id="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div className="form-field">
@@ -56,7 +46,8 @@ const AddContactForm: React.FC<AddContactFormProps> = ({ onContactAdded, contact
             type="email"
             id="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div className="form-field">
@@ -65,12 +56,15 @@ const AddContactForm: React.FC<AddContactFormProps> = ({ onContactAdded, contact
             type="tel"
             id="phone"
             value={phone}
-            onChange={e => setPhone(e.target.value)}
+            onChange={(e) => setPhone(e.target.value)}
+            required
           />
         </div>
         <div className="form-buttons">
-          <button type="submit">{contact ? 'Update' : 'Add'}</button>
-          <button type="button" onClick={onContactAdded}>Close</button>
+          <button type="submit">Add Contact</button>
+          <button type="button" onClick={onContactAdded}>
+            Close
+          </button>
         </div>
       </form>
     </div>
