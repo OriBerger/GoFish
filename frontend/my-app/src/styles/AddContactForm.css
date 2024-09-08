@@ -1,0 +1,64 @@
+.add-contact-form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.add-contact-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Adjust the gap between fields as needed */
+  max-width: 600px; /* Adjust to fit your design */
+  border: 1px solid #ccc; /* Match the border style of ContactsTable */
+  border-radius: 4px;
+  padding: 20px;
+  background-color: #fff; /* Ensure it matches your overall theme */
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 30%; /* Adjust the flex basis to ensure fields are on one line */
+}
+
+.form-field label {
+  margin-bottom: 5px;
+}
+
+.form-field input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -15px;
+}
+
+.form-buttons button {
+  margin-left: 120px;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #4CAF50; /* Green for add/update */
+  color: #fff;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #45a049; /* Darker green for hover */
+}
+
+.form-buttons button[type="button"] {
+  background-color: #f44336; /* Red for close */
+  color: #fff;
+}
+
+.form-buttons button[type="button"]:hover {
+  background-color: #d32f2f; /* Darker red for hover */
+}

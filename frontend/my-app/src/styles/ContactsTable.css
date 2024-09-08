@@ -1,0 +1,24 @@
+/* Styles for the buttons inside the ContactsTable */
+.contacts-table button {
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.contacts-table .edit-button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.contacts-table .edit-button:hover {
+  background-color: #45a049; /* Darker green */
+}
+
+.contacts-table .delete-button {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.contacts-table .delete-button:hover {
+  background-color: #da190b; /* Darker red */
+}
