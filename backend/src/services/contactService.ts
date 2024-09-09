@@ -22,15 +22,10 @@ export const createContact = async (
   }
 };
 
-export const fetchContactsWithPagination = async (
-  userId: string,
-  limit: number,
-  skip: number
-) => {
+export const fetchAllContacts = async (userId: string) => {
   try {
     const user = await User.findById(userId).populate({
       path: "contacts",
-      options: { limit, skip },
     });
 
     const totalContacts = await User.aggregate([
@@ -44,7 +39,7 @@ export const fetchContactsWithPagination = async (
     };
   } catch (error) {
     console.error(error);
-    throw new Error("Could not fetch contacts with pagination");
+    throw new Error("Could not fetch contacts");
   }
 };
 

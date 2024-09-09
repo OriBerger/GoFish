@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {
   createContact,
-  fetchContactsWithPagination,
+  fetchAllContacts,
   editContact,
   deleteContact,
 } from "../services/contactService";
@@ -28,8 +28,6 @@ export const fetchContactsHandler = async (
   req: RequestWithUser,
   res: Response
 ) => {
-  const { page = 1, limit = 10 } = req.query;
-  const skip = (Number(page) - 1) * Number(limit);
   const userId = req.user?.userId;
 
   if (!userId) {
@@ -37,15 +35,10 @@ export const fetchContactsHandler = async (
   }
 
   try {
-    const { contacts, totalContacts } = await fetchContactsWithPagination(
-      userId,
-      Number(limit),
-      skip
-    );
+    const { contacts, totalContacts } = await fetchAllContacts(userId);
+
     res.status(200).json({
       contacts,
-      currentPage: Number(page),
-      totalPages: Math.ceil(totalContacts / Number(limit)),
       totalContacts,
     });
   } catch (error) {
