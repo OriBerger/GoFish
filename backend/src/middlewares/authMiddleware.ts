@@ -1,8 +1,9 @@
 // middleware/authMiddleware.ts
+require('dotenv').config()
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const jwtSecret = "your_jwt_secret"; // Change this to your actual secret
+const jwtSecret = process.env.JWT_SECRET || 'secretkey'; 
 
 interface RequestWithUser extends Request {
   user?: { userId: string };

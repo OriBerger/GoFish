@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+require('dotenv').config()
+const mongoose = require('mongoose');
 
-const mongoURL =
-  "mongodb+srv://ron101200:uN5yQVf80m9CCfZN@gofish.clviy.mongodb.net/?retryWrites=true&w=majority&appName=goFish";
-
+const mongoURI = process.env.MONGODB_URI;
+  
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongoURL);
+    await mongoose.connect(mongoURI, {});
     console.log("MongoDB connected");
   } catch (error) {
     console.error("MongoDB connection error:", error);

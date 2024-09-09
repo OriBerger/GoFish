@@ -1,7 +1,7 @@
 import User from "../models/User";
 import jwt from "jsonwebtoken";
 
-const jwtSecret = "your_jwt_secret"; // Ensure this is kept secure and not hardcoded in production
+const jwtSecret = process.env.JWT_SECRET || 'secretkey'; 
 
 export const registerUser = async (email: string, password: string) => {
   try {

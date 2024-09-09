@@ -1,3 +1,4 @@
+require('dotenv').config()
 import express from "express";
 import cors from "cors";
 import connectDB from "./config/db";
@@ -5,7 +6,7 @@ import errorMiddleware from "./middlewares/errorMiddleware";
 import router from "./routes/routes";
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT  || 3001;
 
 // Connect to MongoDB
 connectDB();
