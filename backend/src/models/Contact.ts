@@ -6,7 +6,8 @@ interface IContact extends Document {
   name: string;
   email: string;
   phone: string;
-  address: string;
+  department: string;
+  role: string;
 }
 
 // Create the Mongoose schema for contact info
@@ -14,7 +15,8 @@ const contactSchema: Schema<IContact> = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: false },
   phone: { type: String, required: false },
-  address: { type: String, required: false },
+  department: { type: String, required: false },
+  role: {type: String, required: false},
 });
 
 // Create the Mongoose model

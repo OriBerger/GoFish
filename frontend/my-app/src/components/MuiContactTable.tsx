@@ -32,8 +32,9 @@ import api from "../services/api";
 import { useEffect } from "react";
 import { Contact } from "../types/appTypes";
 import { NewspaperRounded } from "@mui/icons-material";
+import { getValueOptions } from "@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils";
 
-const roles = ["Manager", "Worker", "Junior"];
+//const roles = ["Manager", "Worker", "Junior"];
 //const department = ["Market", "Finance", "Development"];
 
 interface EditToolbarProps {
@@ -145,6 +146,8 @@ export default function FullFeaturedCrudGrid() {
           name: newRow.name,
           email: newRow.email,
           phone: newRow.phone,
+          role: newRow.role,
+          department: newRow.department,
         });
 
         // Extract the server-generated ID from the response
@@ -163,6 +166,8 @@ export default function FullFeaturedCrudGrid() {
           name: newRow.name,
           email: newRow.email,
           phone: newRow.phone,
+          role: newRow.role,
+          department: newRow.department,
         });
 
         // Update state
@@ -205,7 +210,14 @@ export default function FullFeaturedCrudGrid() {
       headerAlign: "left",
       editable: true,
     },
-
+    {
+      field: "role",
+      headerName: "Role",
+      width: 120,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Manager", "Worker", "Junior"],
+    },
     {
       field: "department",
       headerName: "Department",
@@ -294,6 +306,8 @@ export default function FullFeaturedCrudGrid() {
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
+        checkboxSelection
+        editMode="row"
       />
     </Box>
   );
