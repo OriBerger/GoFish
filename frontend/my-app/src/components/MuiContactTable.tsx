@@ -19,6 +19,8 @@ import {
   GridRowModel,
   GridRowEditStopReasons,
   GridSlots,
+  useGridApiRef,
+  GridApi,
 } from "@mui/x-data-grid";
 import {
   randomCreatedDate,
@@ -26,49 +28,13 @@ import {
   randomId,
   randomArrayItem,
 } from "@mui/x-data-grid-generator";
+import api from "../services/api";
+import { useEffect } from "react";
+import { Contact } from "../types/appTypes";
+import { NewspaperRounded } from "@mui/icons-material";
 
-const roles = ["Market", "Finance", "Development"];
-const randomRole = () => {
-  return randomArrayItem(roles);
-};
-
-const initialRows: GridRowsProp = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 25,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 36,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-];
+const roles = ["Manager", "Worker", "Junior"];
+//const department = ["Market", "Finance", "Development"];
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -77,32 +43,66 @@ interface EditToolbarProps {
   ) => void;
 }
 
+interface GridRowContact extends Contact {
+  isNew?: boolean; // Optional property for managing row state in UI
+}
+
 function EditToolbar(props: EditToolbarProps) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
+    // Create a new row with temporary values
+    const newRow: GridRowContact = {
+      id: randomId(), // Temporary ID for local state
+      name: "",
+      email: "",
+      phone: "",
+      department: "",
+      role: "", // Default value or handle based on your needs
+      isNew: true,
+    };
+
+    // Add the new row to the DataGrid
+    setRows((oldRows) => [newRow, ...oldRows]);
+
+    // Set the row mode to 'edit' for the new row
     setRowModesModel((oldModel) => ({
+      [newRow.id]: { mode: GridRowModes.Edit },
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
     }));
   };
 
   return (
     <GridToolbarContainer>
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
+        Add contact
       </Button>
     </GridToolbarContainer>
   );
 }
 
 export default function FullFeaturedCrudGrid() {
-  const [rows, setRows] = React.useState(initialRows);
+  const [rows, setRows] = React.useState<GridRowContact[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+
+  const fetchContacts = async () => {
+    try {
+      const response = await api.get(`/contacts`, {});
+      const contacts = response.data.contacts.map((contact: any) => ({
+        id: contact._id, // Use _id as id
+        ...contact,
+      }));
+      setRows(contacts);
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchContacts();
+  }, []);
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
@@ -137,10 +137,43 @@ export default function FullFeaturedCrudGrid() {
     }
   };
 
-  const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
+  const processRowUpdate = async (newRow: GridRowContact) => {
+    try {
+      if (newRow.isNew) {
+        // Call API to create a new contact
+        const response = await api.post(`/contacts`, {
+          name: newRow.name,
+          email: newRow.email,
+          phone: newRow.phone,
+        });
+
+        // Extract the server-generated ID from the response
+        const serverGeneratedId = response.data._id;
+
+        // Update the row with the server-generated ID
+        const updatedRow = { ...newRow, id: serverGeneratedId, isNew: false };
+
+        // Update state
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        return updatedRow;
+      } else {
+        // Call API to update an existing contact
+        console.log("going to send put request");
+        const response = await api.put(`/contacts/${newRow.id}`, {
+          name: newRow.name,
+          email: newRow.email,
+          phone: newRow.phone,
+        });
+
+        // Update state
+        const updatedRow = { ...newRow, isNew: false };
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        return updatedRow;
+      }
+    } catch (error) {
+      console.error("Error updating contact:", error);
+      return newRow; // Return the row with errors to keep it in edit mode
+    }
   };
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -148,25 +181,33 @@ export default function FullFeaturedCrudGrid() {
   };
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 180, editable: true },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
+      field: "name",
+      headerName: "Name",
+      width: 180,
+      editable: true,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      type: "string",
       width: 80,
       align: "left",
       headerAlign: "left",
       editable: true,
     },
     {
-      field: "joinDate",
-      headerName: "Join date",
-      type: "date",
-      width: 180,
+      field: "phone",
+      headerName: "Phone",
+      type: "string",
+      width: 80,
+      align: "left",
+      headerAlign: "left",
       editable: true,
     },
+
     {
-      field: "role",
+      field: "department",
       headerName: "Department",
       width: 220,
       editable: true,
@@ -235,9 +276,14 @@ export default function FullFeaturedCrudGrid() {
       }}
     >
       <DataGrid
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 10, page: 0 },
+          },
+        }}
+        pageSizeOptions={[5, 10, 25]}
         rows={rows}
         columns={columns}
-        editMode="row"
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}

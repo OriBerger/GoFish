@@ -23,7 +23,7 @@ router.post("/contacts", authenticate, createContactHandler);
 // Route to get contacts with pagination (protected)
 router.get("/contacts", authenticate, fetchContactsHandler);
 
-router.put("/contacts", authenticate, editContactHandler);
+router.put("/contacts/:contactId", authenticate, editContactHandler);
 
 router.delete("/contacts", authenticate, deleteContactHandler);
 

@@ -3,8 +3,10 @@ export interface ErrorResponse {
 }
 
 export interface Contact {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   phone: string;
+  department: string;
+  role: string;
 }
