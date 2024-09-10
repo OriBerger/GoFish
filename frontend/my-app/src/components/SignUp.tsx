@@ -25,8 +25,7 @@ const SignUp: React.FC = () => {
     try {
       const response = await api.post("/signup", { email, password });
       console.log("Sign Up successful:", response.data);
-      localStorage.setItem("token", response.data.token);
-      navigate("/main");
+      navigate("/");
       setMessage(response.data.message);
     } catch (error) {
       setMessage(
