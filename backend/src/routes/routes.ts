@@ -1,11 +1,11 @@
 // routes/authRoutes.ts
 import express from "express";
-import { signup, login } from "../controllers/authController";
+import { login, signup } from "../controllers/authController";
 import {
   createContactHandler,
-  fetchContactsHandler,
-  editContactHandler,
   deleteContactHandler,
+  editContactHandler,
+  fetchContactsHandler,
 } from "../controllers/contactController";
 import authenticate from "../middlewares/authMiddleware";
 
@@ -26,5 +26,11 @@ router.get("/contacts", authenticate, fetchContactsHandler);
 router.put("/contacts/:contactId", authenticate, editContactHandler);
 
 router.delete("/contacts", authenticate, deleteContactHandler);
+
+router.get("/main", authenticate, fetchContactsHandler);
+
+router.get("/statistics", authenticate, fetchContactsHandler);
+
+
 
 export default router;
