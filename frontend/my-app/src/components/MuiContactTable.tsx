@@ -20,7 +20,8 @@ import {
   randomId
 } from "@mui/x-data-grid-generator";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { Contact } from "../types/appTypes";
 
@@ -73,6 +74,7 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 export default function FullFeaturedCrudGrid() {
+  const [loading, setLoading] = useState(false);
   const [rows, setRows] = React.useState<GridRowContact[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
@@ -104,17 +106,41 @@ export default function FullFeaturedCrudGrid() {
   //   }
   // };
 
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  const navigate = useNavigate(); // Use navigate to redirect
+
+  const handleEditClick = (id: GridRowId) => async () => {
+    if (loading) return; // Prevent edit click during loading
+    setLoading(true); // Set loading state to true
+    try {
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    } catch (error) {
+      console.error("Error starting edit:", error);
+      alert("Could not edit contact. Please try again.");
+    } finally {
+      setLoading(false); // Reset loading state after completion
+    }
   };
+  
+  
 
-  const handleSaveClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  const handleSaveClick = (id: GridRowId) => async () => {
+    if (loading) return; // Prevent save click during loading
+    setLoading(true); // Set loading state to true
+    try {
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+      // Save logic here if needed (already handled in processRowUpdate)
+    } catch (error) {
+      console.error("Error saving:", error);
+      alert("Could not save contact. Please try again.");
+    } finally {
+      setLoading(false); // Reset loading state after completion
+    }
   };
-
-const [loading, setLoading] = React.useState(false);
-
+  
+  
   const handleDeleteClick = (id: GridRowId) => async () => {
+    if (loading) return; // Prevent save click during loading
+
     setLoading(true);
     try {
       await api.delete(`/contacts/${id}`); // Correct API route with contact ID
@@ -122,6 +148,7 @@ const [loading, setLoading] = React.useState(false);
     } catch (error) {
       console.error("Error deleting contact:", error);
       alert("Could not delete contact. Please try again.");
+      navigate("/main");
     } finally {
       setLoading(false);
     }
@@ -130,18 +157,35 @@ const [loading, setLoading] = React.useState(false);
   
 
   const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
+    if (loading) return; // Prevent cancel click during loading
+    setLoading(true);
 
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
+    try {
+      // Set the row mode back to view
+      setRowModesModel({
+        ...rowModesModel,
+        [id]: { mode: GridRowModes.View, ignoreModifications: true },
+      });
+  
+      const editedRow = rows.find((row) => row.id === id);
+      if (editedRow?.isNew) {
+        // If the row is new, remove it from the list
+        setRows(rows.filter((row) => row.id !== id));
+      }
+    } catch (error) {
+      console.error("Error during cancel operation:", error);
+      alert("An error occurred while canceling. Please try again.");
+      navigate("/main");
+    } finally {
+      setLoading(false);
     }
   };
+  
+  
 
-  const processRowUpdate = async (newRow: GridRowContact) => {
+  const processRowUpdate = async (newRow: GridRowContact, oldRow: GridRowContact) => {
+    if (loading) return oldRow; // Return the previous row to prevent type mismatch
+    setLoading(true); // Start loading when updating the row
     try {
       if (newRow.isNew) {
         // Call API to create a new contact
@@ -180,10 +224,12 @@ const [loading, setLoading] = React.useState(false);
       }
     } catch (error) {
       console.error("Error updating contact:", error);
-      return newRow; // Return the row with errors to keep it in edit mode
+      return newRow; // Keep in edit mode on failure
+    } finally {
+      setLoading(false); // End loading after completion
     }
   };
-
+  
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
@@ -236,6 +282,11 @@ const [loading, setLoading] = React.useState(false);
       width: 100,
       cellClassName: "actions",
       getActions: ({ id }) => {
+        const row = rows.find((row) => row.id === id);
+        if (!row) {
+          return [];
+        }
+
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -243,15 +294,15 @@ const [loading, setLoading] = React.useState(false);
             <GridActionsCellItem
               icon={<SaveIcon />}
               label="Save"
-              sx={{
-                color: "primary.main",
-              }}
+              sx={{ color: "primary.main" }}
+              disabled={loading} // Disable Save during loading
               onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
+              disabled={loading} // Disable Cancel during loading
               onClick={handleCancelClick(id)}
               color="inherit"
             />,
@@ -263,12 +314,14 @@ const [loading, setLoading] = React.useState(false);
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
+            disabled={loading} // Disable Edit during loading
             onClick={handleEditClick(id)}
             color="inherit"
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
+            disabled={loading} // Disable Delete during loading
             onClick={handleDeleteClick(id)}
             color="inherit"
           />,
