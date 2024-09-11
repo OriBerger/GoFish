@@ -25,7 +25,7 @@ router.get("/contacts", authenticate, fetchContactsHandler);
 
 router.put("/contacts/:contactId", authenticate, editContactHandler);
 
-router.delete("/contacts", authenticate, deleteContactHandler);
+router.delete("/contacts/:contactId", authenticate, deleteContactHandler);
 
 router.get("/main", authenticate, fetchContactsHandler);
 
