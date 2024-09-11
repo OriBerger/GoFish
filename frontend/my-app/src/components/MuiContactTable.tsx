@@ -1,38 +1,28 @@
-import * as React from "react";
+import AddIcon from "@mui/icons-material/Add";
+import CancelIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
 import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
   DataGrid,
-  GridColDef,
-  GridToolbarContainer,
   GridActionsCellItem,
-  GridEventListener,
+  GridColDef,
   GridRowId,
-  GridRowModel,
-  GridRowEditStopReasons,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowsProp,
   GridSlots,
-  useGridApiRef,
-  GridApi,
+  GridToolbarContainer
 } from "@mui/x-data-grid";
 import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
+  randomId
 } from "@mui/x-data-grid-generator";
-import api from "../services/api";
+import * as React from "react";
 import { useEffect } from "react";
+import api from "../services/api";
 import { Contact } from "../types/appTypes";
-import { NewspaperRounded } from "@mui/icons-material";
-import { getValueOptions } from "@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils";
 
 //const roles = ["Manager", "Worker", "Junior"];
 //const department = ["Market", "Finance", "Development"];
@@ -105,14 +95,14 @@ export default function FullFeaturedCrudGrid() {
     fetchContacts();
   }, []);
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event
-  ) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
+  // const handleRowEditStop: GridEventListener<"rowEditStop"> = (
+  //   params,
+  //   event
+  // ) => {
+  //   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+  //     event.defaultMuiPrevented = true;
+  //   }
+  // };
 
   const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -122,9 +112,22 @@ export default function FullFeaturedCrudGrid() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+const [loading, setLoading] = React.useState(false);
+
+  const handleDeleteClick = (id: GridRowId) => async () => {
+    setLoading(true);
+    try {
+      await api.delete(`/contacts/${id}`); // Correct API route with contact ID
+      setRows(rows.filter((row) => row.id !== id)); // Update UI
+    } catch (error) {
+      console.error("Error deleting contact:", error);
+      alert("Could not delete contact. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  
 
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
@@ -298,7 +301,7 @@ export default function FullFeaturedCrudGrid() {
         columns={columns}
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
+        // onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar as GridSlots["toolbar"],

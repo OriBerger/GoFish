@@ -1,6 +1,7 @@
+import mongoose, { Types } from "mongoose";
 import ContactModel from "../models/Contact";
 import User from "../models/User";
-import { Types } from "mongoose";
+
 
 export const createContact = async (
   userId: string,
@@ -17,6 +18,9 @@ export const createContact = async (
     }
     return contact;
   } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      throw new Error(`Validation error: ${Object.values(error.errors).map(err => err.message).join(', ')}`);
+    }
     console.error(error);
     throw new Error("Could not add contact");
   }
@@ -49,29 +53,26 @@ export const editContact = async (
   updatedData: { name?: string; email?: string; phone?: string }
 ) => {
   try {
-    // Convert contactId to ObjectId
     const contactObjectId = new Types.ObjectId(contactId);
-
-    // Find the contact by its ID
     const contact = await ContactModel.findById(contactId);
 
-    // Check if the contact exists and belongs to the user
     if (!contact) {
-      return null; // Contact not found
+      return null;
     }
 
-    // Optionally verify that the contact belongs to the user
     const user = await User.findById(userId);
     if (user && !user.contacts.includes(contactObjectId)) {
       throw new Error("Contact does not belong to the user");
     }
 
-    // Update the contact with the new data
     Object.assign(contact, updatedData);
     await contact.save();
 
     return contact;
   } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      throw new Error(`Validation error: ${Object.values(error.errors).map(err => err.message).join(', ')}`);
+    }
     console.error(error);
     throw new Error("Could not edit contact");
   }
@@ -79,34 +80,30 @@ export const editContact = async (
 
 export const deleteContact = async (userId: string, contactId: string) => {
   try {
-    // Convert contactId to ObjectId
     const contactObjectId = new Types.ObjectId(contactId);
-
-    // Find the contact by its ID
     const contact = await ContactModel.findById(contactId);
 
-    // Check if the contact exists
     if (!contact) {
-      return null; // Contact not found
+      return null;
     }
 
-    // Optionally verify that the contact belongs to the user
     const user = await User.findById(userId);
     if (user && !user.contacts.includes(contactObjectId)) {
       throw new Error("Contact does not belong to the user");
     }
 
-    // Remove the contact from the user's contacts list
     if (user) {
       user.contacts = user.contacts.filter((id) => id.toString() !== contactId);
       await user.save();
     }
 
-    // Delete the contact
     await ContactModel.findByIdAndDelete(contactId);
 
     return { message: "Contact successfully deleted" };
   } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      throw new Error(`Validation error: ${Object.values(error.errors).map(err => err.message).join(', ')}`);
+    }
     console.error(error);
     throw new Error("Could not delete contact");
   }
