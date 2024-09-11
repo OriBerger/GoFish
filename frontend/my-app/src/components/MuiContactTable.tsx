@@ -112,7 +112,7 @@ export default function FullFeaturedCrudGrid() {
     if (loading) return; // Prevent edit click during loading
     setLoading(true); // Set loading state to true
     try {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     } catch (error) {
       console.error("Error starting edit:", error);
       alert("Could not edit contact. Please try again.");
@@ -127,7 +127,7 @@ export default function FullFeaturedCrudGrid() {
     if (loading) return; // Prevent save click during loading
     setLoading(true); // Set loading state to true
     try {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
       // Save logic here if needed (already handled in processRowUpdate)
     } catch (error) {
       console.error("Error saving:", error);
@@ -137,7 +137,7 @@ export default function FullFeaturedCrudGrid() {
     }
   };
   
-
+  
   const handleDeleteClick = (id: GridRowId) => async () => {
     if (loading) return; // Prevent save click during loading
 
@@ -162,16 +162,16 @@ export default function FullFeaturedCrudGrid() {
 
     try {
       // Set the row mode back to view
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
+      setRowModesModel({
+        ...rowModesModel,
+        [id]: { mode: GridRowModes.View, ignoreModifications: true },
+      });
+  
+      const editedRow = rows.find((row) => row.id === id);
       if (editedRow?.isNew) {
         // If the row is new, remove it from the list
-      setRows(rows.filter((row) => row.id !== id));
-    }
+        setRows(rows.filter((row) => row.id !== id));
+      }
     } catch (error) {
       console.error("Error during cancel operation:", error);
       alert("An error occurred while canceling. Please try again.");
@@ -229,7 +229,7 @@ export default function FullFeaturedCrudGrid() {
       setLoading(false); // End loading after completion
     }
   };
-
+  
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
