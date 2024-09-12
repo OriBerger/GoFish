@@ -1,0 +1,22 @@
+.start-campaign-button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    position: fixed;
+    color: white; /* Text color */
+    top: 26px;
+    right: 216px; /* Adjust this value to position it appropriately */
+    padding: 10px 20px; /* Padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px; /* Rounded corners */
+    /* Add any other styling properties you need */
+  }
+  
+  .start-campaign-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  

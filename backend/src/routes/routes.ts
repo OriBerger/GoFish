@@ -7,6 +7,8 @@ import {
   editContactHandler,
   fetchContactsHandler,
 } from "../controllers/contactController";
+import { sendEmailHandler } from '../controllers/emailController';
+import { trackClick } from '../controllers/trackingController';
 import authenticate from "../middlewares/authMiddleware";
 
 const router = express.Router();
@@ -32,5 +34,10 @@ router.get("/main", authenticate, fetchContactsHandler);
 router.get("/statistics", authenticate, fetchContactsHandler);
 
 
+// Route to send phishing emails
+router.post('/send-phishing', authenticate, sendEmailHandler);
+
+// Route to track clicks
+router.get('/track/:trackingId/:contactId', trackClick);
 
 export default router;
