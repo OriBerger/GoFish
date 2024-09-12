@@ -12,6 +12,7 @@ import {
   GridRowId,
   GridRowModes,
   GridRowModesModel,
+  GridRowSelectionModel,
   GridRowsProp,
   GridSlots,
   GridToolbarContainer
@@ -36,7 +37,11 @@ interface EditToolbarProps {
 }
 
 interface GridRowContact extends Contact {
-  isNew?: boolean; // Optional property for managing row state in UI
+  isNew?: boolean;
+}
+
+interface FullFeaturedCrudGridProps {
+  setSelectedContacts: (contacts: Contact[]) => void;
 }
 
 function EditToolbar(props: EditToolbarProps) {
@@ -73,9 +78,9 @@ function EditToolbar(props: EditToolbarProps) {
   );
 }
 
-export default function FullFeaturedCrudGrid() {
+export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeaturedCrudGridProps) {
   const [loading, setLoading] = useState(false);
-  const [rows, setRows] = React.useState<GridRowContact[]>([]);
+  const [rows, setRows] = React.useState<Contact[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
@@ -155,11 +160,11 @@ export default function FullFeaturedCrudGrid() {
   };
   
   
-
+  const [newRows, setNewRows] = useState<GridRowId[]>([]);
   const handleCancelClick = (id: GridRowId) => () => {
     if (loading) return; // Prevent cancel click during loading
     setLoading(true);
-
+  
     try {
       // Set the row mode back to view
       setRowModesModel({
@@ -167,10 +172,10 @@ export default function FullFeaturedCrudGrid() {
         [id]: { mode: GridRowModes.View, ignoreModifications: true },
       });
   
-      const editedRow = rows.find((row) => row.id === id);
-      if (editedRow?.isNew) {
-        // If the row is new, remove it from the list
+      if (newRows.includes(id)) {
+        // If the row is in newRows, remove it from the list
         setRows(rows.filter((row) => row.id !== id));
+        setNewRows(newRows.filter((newId) => newId !== id)); // Also remove from newRows list
       }
     } catch (error) {
       console.error("Error during cancel operation:", error);
@@ -180,7 +185,6 @@ export default function FullFeaturedCrudGrid() {
       setLoading(false);
     }
   };
-  
   
 
   const processRowUpdate = async (newRow: GridRowContact, oldRow: GridRowContact) => {
@@ -233,6 +237,12 @@ export default function FullFeaturedCrudGrid() {
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
+
+  const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
+    // Find the selected contacts based on their IDs
+    const selectedContacts = rows.filter((row) => newSelection.includes(row.id));
+    setSelectedContacts(selectedContacts);
+  };  
 
   const columns: GridColDef[] = [
     {
@@ -364,6 +374,7 @@ export default function FullFeaturedCrudGrid() {
         }}
         checkboxSelection
         editMode="row"
+        onRowSelectionModelChange={(newSelection) => handleSelectionChange(newSelection)}
       />
     </Box>
   );
