@@ -9,17 +9,16 @@ import {
   DataGrid,
   GridActionsCellItem,
   GridColDef,
+  GridPreProcessEditCellProps,
   GridRowId,
   GridRowModes,
   GridRowModesModel,
   GridRowSelectionModel,
   GridRowsProp,
   GridSlots,
-  GridToolbarContainer
+  GridToolbarContainer,
 } from "@mui/x-data-grid";
-import {
-  randomId
-} from "@mui/x-data-grid-generator";
+import { randomId } from "@mui/x-data-grid-generator";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +27,6 @@ import { Contact } from "../types/appTypes";
 
 //const roles = ["Manager", "Worker", "Junior"];
 //const department = ["Market", "Finance", "Development"];
-
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
@@ -78,9 +76,11 @@ function EditToolbar(props: EditToolbarProps) {
   );
 }
 
-export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeaturedCrudGridProps) {
+export default function FullFeaturedCrudGrid({
+  setSelectedContacts,
+}: FullFeaturedCrudGridProps) {
   const [loading, setLoading] = useState(false);
-  const [rows, setRows] = React.useState<Contact[]>([]);
+  const [rows, setRows] = React.useState<GridRowContact[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
@@ -102,15 +102,6 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
     fetchContacts();
   }, []);
 
-  // const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-  //   params,
-  //   event
-  // ) => {
-  //   if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-  //     event.defaultMuiPrevented = true;
-  //   }
-  // };
-
   const navigate = useNavigate(); // Use navigate to redirect
 
   const handleEditClick = (id: GridRowId) => async () => {
@@ -125,14 +116,15 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
       setLoading(false); // Reset loading state after completion
     }
   };
-  
-  
 
   const handleSaveClick = (id: GridRowId) => async () => {
     if (loading) return; // Prevent save click during loading
     setLoading(true); // Set loading state to true
     try {
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+      setRowModesModel({
+        ...rowModesModel,
+        [id]: { mode: GridRowModes.View },
+      });
       // Save logic here if needed (already handled in processRowUpdate)
     } catch (error) {
       console.error("Error saving:", error);
@@ -141,8 +133,7 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
       setLoading(false); // Reset loading state after completion
     }
   };
-  
-  
+
   const handleDeleteClick = (id: GridRowId) => async () => {
     if (loading) return; // Prevent save click during loading
 
@@ -158,43 +149,42 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
       setLoading(false);
     }
   };
-  
-  
-  const [newRows, setNewRows] = useState<GridRowId[]>([]);
-  const handleCancelClick = (id: GridRowId) => () => {
-    if (loading) return; // Prevent cancel click during loading
-    setLoading(true);
-  
-    try {
-      // Set the row mode back to view
-      setRowModesModel({
-        ...rowModesModel,
-        [id]: { mode: GridRowModes.View, ignoreModifications: true },
-      });
-  
-      if (newRows.includes(id)) {
-        // If the row is in newRows, remove it from the list
-        setRows(rows.filter((row) => row.id !== id));
-        setNewRows(newRows.filter((newId) => newId !== id)); // Also remove from newRows list
-      }
-    } catch (error) {
-      console.error("Error during cancel operation:", error);
-      alert("An error occurred while canceling. Please try again.");
-      navigate("/main");
-    } finally {
-      setLoading(false);
-    }
-  };
-  
 
-  const processRowUpdate = async (newRow: GridRowContact, oldRow: GridRowContact) => {
+  const handleCancelClick =
+    (id: GridRowId, row: GridRowContact | undefined) => () => {
+      if (loading) return; // Prevent cancel click during loading
+      setLoading(true);
+      if (row?.name == "") {
+        // only time that happen is when we cancelling edditing of new contact. then we want to delete the new contact line.
+        setRows(rows.filter((row) => row.id != id));
+      }
+      try {
+        // Set the row mode back to view
+        setRowModesModel({
+          ...rowModesModel,
+          [id]: { mode: GridRowModes.View, ignoreModifications: true },
+        });
+      } catch (error) {
+        console.error("Error during cancel operation:", error);
+        alert("An error occurred while canceling. Please try again.");
+        navigate("/main");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  const processRowUpdate = async (
+    newRow: GridRowContact,
+    oldRow: GridRowContact
+  ) => {
     if (loading) return oldRow; // Return the previous row to prevent type mismatch
     setLoading(true); // Start loading when updating the row
     try {
       if (newRow.isNew) {
         // Call API to create a new contact
+        const newContactName = newRow.name == "" ? "new contact" : newRow.name;
         const response = await api.post(`/contacts`, {
-          name: newRow.name,
+          name: newContactName,
           email: newRow.email,
           phone: newRow.phone,
           role: newRow.role,
@@ -205,14 +195,18 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
         const serverGeneratedId = response.data._id;
 
         // Update the row with the server-generated ID
-        const updatedRow = { ...newRow, id: serverGeneratedId, isNew: false };
+        const updatedRow = {
+          ...newRow,
+          name: newContactName,
+          id: serverGeneratedId,
+          isNew: false,
+        };
 
         // Update state
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
       } else {
         // Call API to update an existing contact
-        console.log("going to send put request");
         const response = await api.put(`/contacts/${newRow.id}`, {
           name: newRow.name,
           email: newRow.email,
@@ -233,16 +227,18 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
       setLoading(false); // End loading after completion
     }
   };
-  
+
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
 
   const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
     // Find the selected contacts based on their IDs
-    const selectedContacts = rows.filter((row) => newSelection.includes(row.id));
+    const selectedContacts = rows.filter((row) =>
+      newSelection.includes(row.id)
+    );
     setSelectedContacts(selectedContacts);
-  };  
+  };
 
   const columns: GridColDef[] = [
     {
@@ -250,6 +246,10 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
       headerName: "Name",
       width: 180,
       editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value == "";
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: "email",
@@ -292,7 +292,9 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
       width: 100,
       cellClassName: "actions",
       getActions: ({ id }) => {
-        const row = rows.find((row) => row.id === id);
+        const row: GridRowContact | undefined = rows.find(
+          (row) => row.id === id
+        );
         if (!row) {
           return [];
         }
@@ -313,7 +315,7 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
               label="Cancel"
               className="textPrimary"
               disabled={loading} // Disable Cancel during loading
-              onClick={handleCancelClick(id)}
+              onClick={handleCancelClick(id, row)}
               color="inherit"
             />,
           ];
@@ -364,7 +366,6 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
         columns={columns}
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
-        // onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar as GridSlots["toolbar"],
@@ -374,7 +375,9 @@ export default function FullFeaturedCrudGrid({ setSelectedContacts }: FullFeatur
         }}
         checkboxSelection
         editMode="row"
-        onRowSelectionModelChange={(newSelection) => handleSelectionChange(newSelection)}
+        onRowSelectionModelChange={(newSelection) =>
+          handleSelectionChange(newSelection)
+        }
       />
     </Box>
   );
