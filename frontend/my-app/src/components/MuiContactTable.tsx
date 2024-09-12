@@ -84,6 +84,8 @@ export default function FullFeaturedCrudGrid({
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+  const [rowSelectionModel, setRowSelectionModel] =
+    useState<GridRowSelectionModel>([]);
 
   const fetchContacts = async () => {
     try {
@@ -182,7 +184,13 @@ export default function FullFeaturedCrudGrid({
     try {
       if (newRow.isNew) {
         // Call API to create a new contact
-        const newContactName = newRow.name == "" ? "new contact" : newRow.name;
+
+        const newContactName = newRow.name === "" ? "new contact" : newRow.name;
+        if (newContactName === "new contact") {
+          alert(
+            "you must provide contact name, default name is set to new contact."
+          );
+        }
         const response = await api.post(`/contacts`, {
           name: newContactName,
           email: newRow.email,
@@ -206,6 +214,10 @@ export default function FullFeaturedCrudGrid({
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
       } else {
+        if (newRow.name == "") {
+          alert("please add contact name. changes unsaved. ");
+          return oldRow;
+        }
         // Call API to update an existing contact
         const response = await api.put(`/contacts/${newRow.id}`, {
           name: newRow.name,
@@ -232,24 +244,12 @@ export default function FullFeaturedCrudGrid({
     setRowModesModel(newRowModesModel);
   };
 
-  const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
-    // Find the selected contacts based on their IDs
-    const selectedContacts = rows.filter((row) =>
-      newSelection.includes(row.id)
-    );
-    setSelectedContacts(selectedContacts);
-  };
-
   const columns: GridColDef[] = [
     {
       field: "name",
       headerName: "Name",
       width: 180,
       editable: true,
-      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-        const hasError = params.props.value == "";
-        return { ...params.props, error: hasError };
-      },
     },
     {
       field: "email",
@@ -375,9 +375,10 @@ export default function FullFeaturedCrudGrid({
         }}
         checkboxSelection
         editMode="row"
-        onRowSelectionModelChange={(newSelection) =>
-          handleSelectionChange(newSelection)
-        }
+        rowSelectionModel={rowSelectionModel}
+        onRowSelectionModelChange={(newRowSelectionModel) => {
+          setRowSelectionModel(newRowSelectionModel);
+        }}
       />
     </Box>
   );
