@@ -84,8 +84,6 @@ export default function FullFeaturedCrudGrid({
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridRowSelectionModel>([]);
 
   const fetchContacts = async () => {
     try {
@@ -244,6 +242,14 @@ export default function FullFeaturedCrudGrid({
     setRowModesModel(newRowModesModel);
   };
 
+  const handleSelectionChange = (newSelection: GridRowSelectionModel) => {
+    // Find the selected contacts based on their IDs
+    const selectedContacts = rows.filter((row) =>
+      newSelection.includes(row.id)
+    );
+    setSelectedContacts(selectedContacts);
+  };
+
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -375,9 +381,8 @@ export default function FullFeaturedCrudGrid({
         }}
         checkboxSelection
         editMode="row"
-        rowSelectionModel={rowSelectionModel}
         onRowSelectionModelChange={(newRowSelectionModel) => {
-          setRowSelectionModel(newRowSelectionModel);
+          handleSelectionChange(newRowSelectionModel);
         }}
       />
     </Box>
