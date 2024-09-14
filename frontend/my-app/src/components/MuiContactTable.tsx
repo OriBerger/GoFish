@@ -182,7 +182,13 @@ export default function FullFeaturedCrudGrid({
     try {
       if (newRow.isNew) {
         // Call API to create a new contact
+
         const newContactName = newRow.name === "" ? "new contact" : newRow.name;
+        if (newContactName === "new contact") {
+          alert(
+            "you must provide contact name, default name is set to new contact."
+          );
+        }
         const response = await api.post(`/contacts`, {
           name: newContactName,
           email: newRow.email,
@@ -206,6 +212,10 @@ export default function FullFeaturedCrudGrid({
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
       } else {
+        if (newRow.name == "") {
+          alert("please add contact name. changes unsaved. ");
+          return oldRow;
+        }
         // Call API to update an existing contact
         await api.put(`/contacts/${newRow.id}`, {
           name: newRow.name,
@@ -375,9 +385,9 @@ export default function FullFeaturedCrudGrid({
         }}
         checkboxSelection
         editMode="row"
-        onRowSelectionModelChange={(newSelection) =>
-          handleSelectionChange(newSelection)
-        }
+        onRowSelectionModelChange={(newRowSelectionModel) => {
+          handleSelectionChange(newRowSelectionModel);
+        }}
       />
     </Box>
   );
