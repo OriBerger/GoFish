@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/StatisticsButton.css"; // Import the CSS file
+import "../styles/StatisticsButton.css";
 
 const StatisticsButton = () => {
   const navigate = useNavigate();
@@ -7,7 +7,7 @@ const StatisticsButton = () => {
   return (
     <button
       onClick={() => navigate("/statistics")}
-      className="statistics-button" // Apply the CSS class
+      className="statistics-button"
     >
       Statistics
     </button>

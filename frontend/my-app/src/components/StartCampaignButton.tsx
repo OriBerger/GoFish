@@ -7,7 +7,9 @@ interface StartCampaignButtonProps {
   selectedContacts: Contact[];
 }
 
-const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({ selectedContacts }) => {
+const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({
+  selectedContacts,
+}) => {
   const navigate = useNavigate();
 
   const handleStartCampaign = () => {
@@ -19,10 +21,7 @@ const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({ selectedConta
   };
 
   return (
-    <button
-      onClick={handleStartCampaign}
-      className="start-campaign-button" // Apply the CSS class
-    >
+    <button onClick={handleStartCampaign} className="start-campaign-button">
       Start Campaign
     </button>
   );
