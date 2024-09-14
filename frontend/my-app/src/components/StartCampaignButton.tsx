@@ -21,10 +21,7 @@ const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({
   };
 
   return (
-    <button
-      onClick={handleStartCampaign}
-      className="start-campaign-button" // Apply the CSS class
-    >
+    <button onClick={handleStartCampaign} className="start-campaign-button">
       Start Campaign
     </button>
   );

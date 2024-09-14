@@ -5,8 +5,6 @@ import "../styles/CampaignPage.css"; // Import the CSS file
 import { Contact } from "../types/appTypes";
 import BackToMainpageButton from "./BackToMainpageButton";
 
-
-
 const CampaignPage: React.FC = () => {
   const { state } = useLocation();
   const { contacts }: { contacts: Contact[] } = state;
@@ -22,7 +20,7 @@ const CampaignPage: React.FC = () => {
     try {
       await api.post("/campaign/send", { contacts, subject, body });
       alert("Emails sent successfully!");
-      navigate("/main"); // Redirect back to main page
+      navigate("/main");
     } catch (error) {
       console.error("Error sending email:", error);
       alert("Failed to send emails. Please try again.");

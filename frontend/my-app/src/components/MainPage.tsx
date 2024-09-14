@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Contact } from "../types/appTypes";
 import LogOutButton from "./LogOutButton";
 import FullFeaturedCrudGrid from "./MuiContactTable";
@@ -8,7 +7,6 @@ import StatisticsButton from "./StatisticsButton";
 
 const MainPage: React.FC = () => {
   const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
-  const navigate = useNavigate();
 
   return (
     <div className="mainpage-container">
