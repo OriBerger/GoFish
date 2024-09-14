@@ -7,7 +7,9 @@ interface StartCampaignButtonProps {
   selectedContacts: Contact[];
 }
 
-const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({ selectedContacts }) => {
+const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({
+  selectedContacts,
+}) => {
   const navigate = useNavigate();
 
   const handleStartCampaign = () => {

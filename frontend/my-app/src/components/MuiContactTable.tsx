@@ -154,9 +154,9 @@ export default function FullFeaturedCrudGrid({
     (id: GridRowId, row: GridRowContact | undefined) => () => {
       if (loading) return; // Prevent cancel click during loading
       setLoading(true);
-      if (row?.name == "") {
+      if (row?.name === "") {
         // only time that happen is when we cancelling edditing of new contact. then we want to delete the new contact line.
-        setRows(rows.filter((row) => row.id != id));
+        setRows(rows.filter((row) => row.id !== id));
       }
       try {
         // Set the row mode back to view
@@ -182,7 +182,7 @@ export default function FullFeaturedCrudGrid({
     try {
       if (newRow.isNew) {
         // Call API to create a new contact
-        const newContactName = newRow.name == "" ? "new contact" : newRow.name;
+        const newContactName = newRow.name === "" ? "new contact" : newRow.name;
         const response = await api.post(`/contacts`, {
           name: newContactName,
           email: newRow.email,
@@ -207,7 +207,7 @@ export default function FullFeaturedCrudGrid({
         return updatedRow;
       } else {
         // Call API to update an existing contact
-        const response = await api.put(`/contacts/${newRow.id}`, {
+        await api.put(`/contacts/${newRow.id}`, {
           name: newRow.name,
           email: newRow.email,
           phone: newRow.phone,
@@ -247,7 +247,7 @@ export default function FullFeaturedCrudGrid({
       width: 180,
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-        const hasError = params.props.value == "";
+        const hasError = params.props.value === "";
         return { ...params.props, error: hasError };
       },
     },
