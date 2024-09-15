@@ -7,9 +7,15 @@ import {
   editContactHandler,
   fetchContactsHandler,
 } from "../controllers/contactController";
-import { sendEmailHandler } from '../controllers/emailController';
-import { trackClick } from '../controllers/trackingController';
+import { sendEmailHandler } from "../controllers/emailController";
+import { trackClick } from "../controllers/trackingController";
 import authenticate from "../middlewares/authMiddleware";
+import {
+  createMaliciousHandler,
+  deleteMaliciousHandler,
+  editMaliciousHandler,
+  fetchMaliciousHandler,
+} from "../controllers/maliciousFormatsController";
 
 const router = express.Router();
 
@@ -33,11 +39,22 @@ router.get("/main", authenticate, fetchContactsHandler);
 
 router.get("/statistics", authenticate, fetchContactsHandler);
 
-
 // Route to send phishing emails
-router.post('/send-phishing', authenticate, sendEmailHandler);
+router.post("/send-phishing", authenticate, sendEmailHandler);
 
 // Route to track clicks
-router.get('/track/:trackingId/:contactId', trackClick);
+router.get("/track/:trackingId/:contactId", trackClick);
+
+// Route to add a malicious message (protected)
+router.post("/malicious", authenticate, createMaliciousHandler);
+
+// Route to get malicious message's (protected)
+router.get("/malicious", authenticate, fetchMaliciousHandler);
+
+// Route to edit a malicious message (protected)
+router.put("/malicious/:maliciousId", authenticate, editMaliciousHandler);
+
+// Route to delete a malicious message (protected)
+router.delete("/malicious/:maliciousId", authenticate, deleteMaliciousHandler);
 
 export default router;

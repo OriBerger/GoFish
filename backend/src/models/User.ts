@@ -8,6 +8,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   contacts: mongoose.Types.ObjectId[];
+  malicious: mongoose.Types.ObjectId[];
   matchPassword(password: string): Promise<boolean>;
 }
 
@@ -22,6 +23,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   contacts: [{ type: Schema.Types.ObjectId, ref: "Contact" }],
+  malicious: [{ type: Schema.Types.ObjectId, ref: "Malicious" }],
 });
 
 // Hash password before saving
