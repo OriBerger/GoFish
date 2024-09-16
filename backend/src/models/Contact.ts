@@ -8,7 +8,7 @@ interface IContact extends Document {
   phone: string;
   department: string;
   role: string;
-  clicked: boolean; // Add this line to include the clicked property
+  emailStatus: string; 
 }
 
 // Create the Mongoose schema for contact info
@@ -18,7 +18,7 @@ const contactSchema: Schema<IContact> = new Schema({
   phone: { type: String, required: false },
   department: { type: String, required: false },
   role: {type: String, required: false},
-  clicked: { type: Boolean, default: false }
+  emailStatus: { type: String, default: 'Not Sent' }
 });
 
 // Create the Mongoose model
