@@ -9,4 +9,5 @@ export interface Contact {
   phone: string;
   department: string;
   role: string;
+  emailStatus: string;
 }
