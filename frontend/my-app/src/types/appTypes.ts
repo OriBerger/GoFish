@@ -10,3 +10,11 @@ export interface Contact {
   department: string;
   role: string;
 }
+
+export interface MaliciousFormat {
+  id: string;
+  sourceEmail: string;
+  sourcePhone: string;
+  message: string;
+  subject: string;
+}
