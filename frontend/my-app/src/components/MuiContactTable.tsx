@@ -53,7 +53,8 @@ function EditToolbar(props: EditToolbarProps) {
       email: "",
       phone: "",
       department: "",
-      role: "", // Default value or handle based on your needs
+      role: "",
+      emailStatus: "Not Sent",
       isNew: true,
     };
 
@@ -90,6 +91,7 @@ export default function FullFeaturedCrudGrid({
       const response = await api.get(`/contacts`, {});
       const contacts = response.data.contacts.map((contact: any) => ({
         id: contact._id, // Use _id as id
+        emailStatus: contact.emailStatus || "Not Sent", // Default to 'Not Sent' if emailStatus is not set
         ...contact,
       }));
       setRows(contacts);
@@ -195,6 +197,7 @@ export default function FullFeaturedCrudGrid({
           phone: newRow.phone,
           role: newRow.role,
           department: newRow.department,
+          emailStatus: "Not Sent", // Save default status to the DB
         });
 
         // Extract the server-generated ID from the response
@@ -205,6 +208,7 @@ export default function FullFeaturedCrudGrid({
           ...newRow,
           name: newContactName,
           id: serverGeneratedId,
+          emailStatus: "Not Sent", // Now show the email status as Not Sent
           isNew: false,
         };
 
@@ -212,7 +216,7 @@ export default function FullFeaturedCrudGrid({
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
       } else {
-        if (newRow.name == "") {
+        if (newRow.name === "") {
           alert("please add contact name. changes unsaved. ");
           return oldRow;
         }
@@ -223,6 +227,7 @@ export default function FullFeaturedCrudGrid({
           phone: newRow.phone,
           role: newRow.role,
           department: newRow.department,
+          emailStatus: newRow.emailStatus,
         });
 
         // Update state
@@ -254,8 +259,10 @@ export default function FullFeaturedCrudGrid({
     {
       field: "name",
       headerName: "Name",
-      width: 180,
+      width: 120,
       editable: true,
+      align: "center",
+      headerAlign: "center",
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value === "";
         return { ...params.props, error: hasError };
@@ -265,18 +272,18 @@ export default function FullFeaturedCrudGrid({
       field: "email",
       headerName: "Email",
       type: "string",
-      width: 80,
-      align: "left",
-      headerAlign: "left",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
       editable: true,
     },
     {
       field: "phone",
       headerName: "Phone",
       type: "string",
-      width: 80,
-      align: "left",
-      headerAlign: "left",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
       editable: true,
     },
     {
@@ -285,15 +292,33 @@ export default function FullFeaturedCrudGrid({
       width: 120,
       editable: true,
       type: "singleSelect",
+      align: "center",
+      headerAlign: "center",
       valueOptions: ["Manager", "Worker", "Junior"],
     },
     {
       field: "department",
       headerName: "Department",
-      width: 220,
+      width: 150,
       editable: true,
       type: "singleSelect",
+      align: "center",
+      headerAlign: "center",
       valueOptions: ["Market", "Finance", "Development"],
+    },
+    {
+      field: "emailStatus",
+      headerName: "emailStatus",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => {
+        let color = "blue"; // Default color
+        if (params.value === "Sent") color = "green";
+        if (params.value === "Clicked") color = "red";
+
+        return <span style={{ color }}>{params.value}</span>;
+      },
     },
     {
       field: "actions",
@@ -301,6 +326,8 @@ export default function FullFeaturedCrudGrid({
       headerName: "Actions",
       width: 100,
       cellClassName: "actions",
+      align: "center",
+      headerAlign: "center",
       getActions: ({ id }) => {
         const row: GridRowContact | undefined = rows.find(
           (row) => row.id === id
