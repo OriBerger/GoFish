@@ -11,3 +11,11 @@ export interface Contact {
   role: string;
   emailStatus: string;
 }
+
+export interface MaliciousFormat {
+  id: string;
+  sourceEmail: string;
+  sourcePhone: string;
+  message: string;
+  subject: string;
+}

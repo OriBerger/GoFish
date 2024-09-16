@@ -6,7 +6,7 @@ interface IMalicious extends Document {
   sourceEmail: string;
   sourcePhone: string;
   message: string;
-  maliciousLink: string;
+  subject: string;
 }
 
 // Create the Mongoose schema for contact info
@@ -14,7 +14,7 @@ const maliciousSchema: Schema<IMalicious> = new Schema({
   sourceEmail: { type: String, required: false },
   sourcePhone: { type: String, required: false },
   message: { type: String, required: false },
-  maliciousLink: { type: String, required: false },
+  subject: { type: String, required: false },
 });
 
 // Create the Mongoose model

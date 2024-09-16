@@ -1,0 +1,5 @@
+.malicious-format{
+  flex: 1; /* Make components take up equal width */
+  padding: 20px;
+  box-sizing: border-box;  /*??*/
+}

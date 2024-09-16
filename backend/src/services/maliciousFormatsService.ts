@@ -8,7 +8,7 @@ export const createMalicious = async (
     sourceEmail: string;
     sourcePhone: string;
     message: string;
-    maliciousLink: string;
+    subject: string;
   }
 ) => {
   try {
@@ -42,7 +42,7 @@ export const fetchAllMalicious = async (userId: string) => {
 
     const totalMalicious = await User.aggregate([
       { $match: { _id: user?._id } },
-      { $project: { count: { $size: "$malicious" } } },
+      { $project: { count: { $size: { $ifNull: ["$malicious", []] } } } },
     ]);
 
     return {
@@ -62,7 +62,7 @@ export const editMalicious = async (
     sourceEmail?: string;
     sourcePhone?: string;
     message?: string;
-    maliciousLink?: string;
+    subject?: string;
   }
 ) => {
   try {
@@ -74,7 +74,7 @@ export const editMalicious = async (
     }
 
     const user = await User.findById(userId);
-    if (user && !user.contacts.includes(maliciousObjectId)) {
+    if (user && !user.malicious.includes(maliciousObjectId)) {
       throw new Error("malicious format does not belong to the user");
     }
 
