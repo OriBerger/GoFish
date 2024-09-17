@@ -212,7 +212,7 @@ export default function FullFeaturedCrudGrid({
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
       } else {
-        if (newRow.name == "") {
+        if (newRow.name === "") {
           alert("please add contact name. changes unsaved. ");
           return oldRow;
         }

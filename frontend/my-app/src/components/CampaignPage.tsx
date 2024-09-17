@@ -6,24 +6,39 @@ import { Contact } from "../types/appTypes";
 import BackToMainpageButton from "./BackToMainpageButton";
 
 const CampaignPage: React.FC = () => {
-  const { state } = useLocation();
-  const { contacts }: { contacts: Contact[] } = state;
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Check if state is undefined, otherwise extract contacts
+  const contacts: Contact[] = (location.state && (location.state as any).contacts) || [];
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
-  const navigate = useNavigate();
+  const [isSending, setIsSending] = useState(false);
 
   const handleSendEmail = async () => {
     if (!subject || !body) {
       alert("Subject and body are required.");
       return;
     }
+    const contactIds = contacts.map(contact => contact.id);
+
+    // Ensure there are selected contacts
+    if (contactIds.length === 0) {
+      alert("No contacts selected for the campaign.");
+      return;
+    }
+
+    setIsSending(true); // Disable the button during sending process
+
     try {
-      await api.post("/campaign/send", { contacts, subject, body });
-      alert("Emails sent successfully!");
+      await api.post("/send-phishing", { contacts, subject, body });
+      alert("Emails sent successfully");
       navigate("/main");
     } catch (error) {
       console.error("Error sending email:", error);
       alert("Failed to send emails. Please try again.");
+    } finally {
+      setIsSending(false); // Re-enable the button after sending
     }
   };
 
@@ -36,13 +51,17 @@ const CampaignPage: React.FC = () => {
         placeholder="Subject"
         value={subject}
         onChange={(e) => setSubject(e.target.value)}
+        disabled={isSending}
       />
       <textarea
         placeholder="Email body"
         value={body}
         onChange={(e) => setBody(e.target.value)}
+        disabled={isSending}
       />
-      <button onClick={handleSendEmail}>Send</button>
+      <button onClick={handleSendEmail} disabled={isSending}>
+        {isSending ? "Sending..." : "Send"}
+      </button>
     </div>
   );
 };

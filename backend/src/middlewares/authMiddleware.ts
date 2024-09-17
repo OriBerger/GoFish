@@ -1,12 +1,10 @@
-// middleware/authMiddleware.ts
-require('dotenv').config()
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-const jwtSecret = process.env.JWT_SECRET || 'secretkey'; 
+const jwtSecret = process.env.JWT_SECRET || 'secretkey';
 
 interface RequestWithUser extends Request {
-  user?: { userId: string };
+  user?: { userId: string; userEmail: string };
 }
 
 const authenticate = (
@@ -21,8 +19,8 @@ const authenticate = (
   }
 
   try {
-    const decoded = jwt.verify(token, jwtSecret) as { userId: string };
-    req.user = { userId: decoded.userId };
+    const decoded = jwt.verify(token, jwtSecret) as { userId: string; email: string };
+    req.user = { userId: decoded.userId, userEmail: decoded.email };
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid token" });
