@@ -3,13 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "../styles/CampaignPage.css"; // Import the CSS file
 import { Contact } from "../types/appTypes";
-import AddNewFormat from "./AddNewFormat";
 import BackToMainpageButton from "./BackToMainpageButton";
-import MaliciousList from "./MaliciousList";
-import SendMessagesButton from "./SendMessagesButton";
 
 const CampaignPage: React.FC = () => {
-  const [choosenFormatId, setChoosenFormatId] = useState<string | null>(null); //////this is ron
+  // const [choosenFormatId, setChoosenFormatId] = useState<string | null>(null); //////this is ron
   const { state } = useLocation();
   const { contacts }: { contacts: Contact[] } = state;
   const [subject, setSubject] = useState("");
@@ -47,14 +44,14 @@ const CampaignPage: React.FC = () => {
         onChange={(e) => setBody(e.target.value)}
       />
       <button onClick={handleSendEmail}>Send</button>
-      <div className="malicious-options"> ///this is ron
+      {/* <div className="malicious-options"> ///this is ron
         <MaliciousList
           choosenFormatId={choosenFormatId}
           setChoosenFormatId={setChoosenFormatId}
         />
         <AddNewFormat />
         <SendMessagesButton choosenFormatId={choosenFormatId} />
-      </div> ///this is ron
+      </div> ///this is ron */}
     </div>
   );
 };
