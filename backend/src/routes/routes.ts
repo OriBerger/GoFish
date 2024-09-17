@@ -8,14 +8,16 @@ import {
   fetchContactsHandler,
 } from "../controllers/contactController";
 import { sendEmailHandler } from "../controllers/emailController";
-import { trackClick } from "../controllers/trackingController";
-import authenticate from "../middlewares/authMiddleware";
 import {
   createMaliciousHandler,
   deleteMaliciousHandler,
   editMaliciousHandler,
   fetchMaliciousHandler,
 } from "../controllers/maliciousFormatsController";
+import { trackClick } from "../controllers/trackingController";
+import { sendgridWebhookHandler } from '../controllers/webhookController';
+import authenticate from "../middlewares/authMiddleware";
+
 
 const router = express.Router();
 
@@ -44,6 +46,9 @@ router.post("/send-phishing", authenticate, sendEmailHandler);
 
 // Route to track clicks
 router.get("/track/:trackingId/:contactId", trackClick);
+
+// hook from send grid that should give us data about clicks
+router.post("/sendgrid-webhook", sendgridWebhookHandler);
 
 // Route to add a malicious message (protected)
 router.post("/malicious", authenticate, createMaliciousHandler);
