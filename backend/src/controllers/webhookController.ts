@@ -12,8 +12,8 @@ export const sendgridWebhookHandler = async (req: Request, res: Response) => {
         const contactId = event.contact_id; // Assuming you send contact ID as metadata
         const contact = await ContactModel.findById(contactId);
 
-        if (contact && !contact.clicked) {
-          contact.clicked = true;
+        if (contact && contact.emailStatus==="Sent") {
+          contact.emailStatus = "Clicked";
           await contact.save();
 
           const user = await User.findOne({ contacts: contactId });

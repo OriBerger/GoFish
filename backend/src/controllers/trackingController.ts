@@ -8,9 +8,9 @@ export const trackClick = async (req: Request, res: Response) => {
     if (!contact) {
       return res.status(400).json({ message: 'Invalid contact' });
     }
-    contact.clicked = true;
+    contact.emailStatus = "Clicked";
     await contact.save();
-    res.status(200).json({ clicked: contact.clicked });
+    res.status(200).json({ clicked: contact.emailStatus });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error tracking click' });
