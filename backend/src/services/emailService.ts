@@ -1,14 +1,21 @@
 import sgMail from '@sendgrid/mail';
 import { v4 as uuidv4 } from 'uuid';
 import ContactModel from '../models/Contact';
+import MaliciousModel from '../models/Malicious';
 import User from '../models/User';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
-export const sendPhishingEmail = async (userId: string, contacts: string[], subject: string, emailContent: string) => {
+export const sendPhishingEmail = async (userId: string, contacts: string[], maliciousId: string) => {
   try {
     const user = await User.findById(userId);
     if (!user) throw new Error("User not found");
+
+    // Fetch the malicious message by ID
+    const maliciousFormat = await MaliciousModel.findById(maliciousId);
+    if (!maliciousFormat) throw new Error("Malicious format not found");
+
+    const { sourceEmail, subject, message } = maliciousFormat; // Extract email, subject, message
 
     const trackingId = uuidv4();
     const errors: string[] = [];
@@ -25,12 +32,12 @@ export const sendPhishingEmail = async (userId: string, contacts: string[], subj
         const msg = {
           to: contact.email,
           from: {
-            email: process.env.GENERIC_EMAIL_ADDRESS as string, // Use  generic email that we created from .env
-            name: "Microsoft Recruit@Microsoft.com", // Set the name you want recipients to see
+            email: "mailinng.systeem@gmail.com",  // Use the source email from the malicious format
+            name: sourceEmail, // Customize name if needed
           },
           subject: subject,
-          text: `${emailContent}\nClick here: ${trackingLink}`,
-          html: `<p>${emailContent}</p><p>Click here: <a href="${trackingLink}">${trackingLink}</a></p>`,
+          text: `${message}\nClick here: ${trackingLink}`,
+          html: `<p>${message}</p><p>Click here: <a href="${trackingLink}">${trackingLink}</a></p>`,
         };
 
         await sgMail.send(msg);
@@ -40,8 +47,7 @@ export const sendPhishingEmail = async (userId: string, contacts: string[], subj
       }
     }
 
-    // Optionally update the user's record if needed
-    await user.save();
+    await user.save(); // Optionally update user data if needed
 
     if (errors.length > 0) {
       return { message: 'Emails sent with errors', errors };

@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
+import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
-  Typography,
+  AccordionSummary,
+  Box,
+  Checkbox,
+  FormControlLabel,
   IconButton,
   List,
   ListItem,
   ListItemButton,
   TextField,
-  Box,
-  Button,
-  FormControlLabel,
-  Checkbox,
+  Typography
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CheckIcon from "@mui/icons-material/Check";
+import React, { useEffect, useState } from "react";
 //import AddIcon from "@mui/icons-material/Add";
-import { useMaliciousFormat } from "./MaliciousListHook";
-import { MaliciousFormat } from "../types/appTypes";
 import "../styles/MaliciousList.css"; // Import the CSS
+import { MaliciousFormat } from "../types/appTypes";
+import { useMaliciousFormat } from "./MaliciousListHook";
 
 type MaliciousListProps = {
   choosenFormatId: string | null;
@@ -105,7 +104,9 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                   control={
                     <Checkbox
                       checked={maliciousFormat.id === choosenFormatId}
-                      onChange={() => setChoosenFormatId(maliciousFormat.id)}
+                      onChange={() => {setChoosenFormatId(maliciousFormat.id)
+                      console.log("Selected Format ID: ", maliciousFormat.id);
+                      }}
                       inputProps={{ "aria-label": "controlled" }}
                     />
                   }
@@ -115,7 +116,25 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                 {maliciousFormat.id === formatBeingEdit ? (
                   <>
                     <TextField
-                      label="Malicious Link"
+                      label="Source Email"
+                      value={maliciousFormatsEditingFields.sourceEmail}
+                      onChange={(e) =>
+                        handleFieldChange("sourceEmail", e.target.value)
+                      }
+                      fullWidth
+                      sx={{ verticalAlign: "middle" }}
+                    />
+                    <TextField
+                      label="Source Phone"
+                      value={maliciousFormatsEditingFields.sourcePhone}
+                      onChange={(e) =>
+                        handleFieldChange("sourcePhone", e.target.value)
+                      }
+                      fullWidth
+                      sx={{ verticalAlign: "middle" }}
+                    />
+                    <TextField
+                      label="Subject"
                       value={maliciousFormatsEditingFields.subject}
                       onChange={(e) =>
                         handleFieldChange("subject", e.target.value)
@@ -124,10 +143,10 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       sx={{ verticalAlign: "middle" }}
                     />
                     <TextField
-                      label="Source Email"
-                      value={maliciousFormatsEditingFields.sourceEmail}
+                      label="Message"
+                      value={maliciousFormatsEditingFields.message}
                       onChange={(e) =>
-                        handleFieldChange("sourceEmail", e.target.value)
+                        handleFieldChange("message", e.target.value)
                       }
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
@@ -142,15 +161,15 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                     }}
                   >
                     <Typography variant="body1">
-                      email:{maliciousFormat.sourceEmail}
+                      Email: {maliciousFormat.sourceEmail}
                     </Typography>
-                    <Typography>link:{maliciousFormat.subject}</Typography>
-                    <Typography>phone:{maliciousFormat.sourcePhone}</Typography>
+                    <Typography>Subject: {maliciousFormat.subject}</Typography>
+                    <Typography>Phone: {maliciousFormat.sourcePhone}</Typography>
                   </Box>
                 )}
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>{maliciousFormat.message}</Typography>
+                <Typography>Message: {maliciousFormat.message}</Typography>
               </AccordionDetails>
             </Accordion>
             <ListItemButton sx={{ flex: 1 }}>

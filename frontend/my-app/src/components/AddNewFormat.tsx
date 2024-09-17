@@ -1,15 +1,15 @@
+import AddIcon from "@mui/icons-material/Add";
 import { Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import { useMaliciousFormat } from "./MaliciousListHook";
 
 const AddNewFormat = () => {
   const [newMaliciousFormat, setNewMaliciousFormat] = useState({
     sourceEmail: "",
     sourcePhone: "",
-    message: "",
     subject: "",
+    message: "",
   });
   const {
     maliciousFormats,
@@ -61,22 +61,22 @@ const AddNewFormat = () => {
         fullWidth
       />
       <TextField
-        label="message"
-        value={newMaliciousFormat.message}
-        onChange={(e) => handleNewItemChange("message", e.target.value)}
-        fullWidth
-      />
-      <TextField
         label="subject"
         value={newMaliciousFormat.subject}
         onChange={(e) => handleNewItemChange("subject", e.target.value)}
+        fullWidth
+      />
+      <TextField
+        label="message"
+        value={newMaliciousFormat.message}
+        onChange={(e) => handleNewItemChange("message", e.target.value)}
         fullWidth
       />
       <Button
         variant="contained"
         startIcon={<AddIcon />}
         onClick={handleAddNewFormat}
-        // disabled={!newMaliciousFormat.message || !newMaliciousFormat.subject} // Disable button if inputs are empty
+        disabled={!newMaliciousFormat.message || !newMaliciousFormat.subject} // Disable button if inputs are empty
       >
         Add Item
       </Button>

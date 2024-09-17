@@ -2,6 +2,6 @@
 .malicious-history-list{
   flex: 4; /* Make components take up equal width */
   padding: 20px;
-  box-sizing: border-box;  /*??*/
-  padding-top: 15px;
+  box-sizing: border-box; 
+  padding-top: 10px;
 }
