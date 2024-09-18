@@ -124,6 +124,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("sourceEmail", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -133,6 +134,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("sourcePhone", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -142,6 +144,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("subject", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -151,6 +154,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("message", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
