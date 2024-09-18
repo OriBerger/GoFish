@@ -14,7 +14,7 @@ import {
   ListItem,
   ListItemButton,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 //import AddIcon from "@mui/icons-material/Add";
@@ -23,17 +23,25 @@ import { MaliciousFormat } from "../types/appTypes";
 import { useMaliciousFormat } from "./MaliciousListHook";
 
 type MaliciousListProps = {
+  maliciousFormats: MaliciousFormat[];
+  handleEditApiCall: (
+    newMaliciousFormat: MaliciousFormat,
+    maliciousFormatId: string
+  ) => Promise<void>;
+  handleDeleteApiCall: (maliciousFormatId: string) => Promise<void>;
+  loading: boolean;
   choosenFormatId: string | null;
   setChoosenFormatId: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const MaliciousList: React.FC<MaliciousListProps> = ({
+  maliciousFormats,
+  handleEditApiCall,
+  handleDeleteApiCall,
+  loading,
   choosenFormatId,
   setChoosenFormatId,
 }) => {
-  console.log("malicious list render");
-
-  //const [choosenFormatId, setchoosenFormatId] = useState<string | null>(null);
   const [formatBeingEdit, setFormatBeingEdit] = useState<string | null>(null);
   const [maliciousFormatsEditingFields, setMaliciousFormatsEditingFields] =
     useState({
@@ -42,13 +50,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
       message: "",
       subject: "",
     });
-  const {
-    maliciousFormats,
-    handleEditApiCall,
-    handleDeleteApiCall,
-    handleCreateApiCall,
-    loading,
-  } = useMaliciousFormat();
+
   useEffect(() => {
     console.log("Malicious formats updated:", maliciousFormats);
   }, [maliciousFormats]);
@@ -104,8 +106,9 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                   control={
                     <Checkbox
                       checked={maliciousFormat.id === choosenFormatId}
-                      onChange={() => {setChoosenFormatId(maliciousFormat.id)
-                      console.log("Selected Format ID: ", maliciousFormat.id);
+                      onChange={() => {
+                        setChoosenFormatId(maliciousFormat.id);
+                        console.log("Selected Format ID: ", maliciousFormat.id);
                       }}
                       inputProps={{ "aria-label": "controlled" }}
                     />
@@ -121,6 +124,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("sourceEmail", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -130,6 +134,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("sourcePhone", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -139,6 +144,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("subject", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -148,6 +154,7 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       onChange={(e) =>
                         handleFieldChange("message", e.target.value)
                       }
+                      onClick={(event) => event.stopPropagation()}
                       fullWidth
                       sx={{ verticalAlign: "middle" }}
                     />
@@ -164,7 +171,9 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
                       Email: {maliciousFormat.sourceEmail}
                     </Typography>
                     <Typography>Subject: {maliciousFormat.subject}</Typography>
-                    <Typography>Phone: {maliciousFormat.sourcePhone}</Typography>
+                    <Typography>
+                      Phone: {maliciousFormat.sourcePhone}
+                    </Typography>
                   </Box>
                 )}
               </AccordionSummary>
