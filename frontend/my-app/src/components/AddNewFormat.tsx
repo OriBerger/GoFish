@@ -19,7 +19,8 @@ const AddNewFormat: React.FC<AddNewFormatProps> = ({ handleCreateApiCall }) => {
     message: "",
   });
 
-  const handleAddNewFormat = () => {
+  const handleAddNewFormat = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (newMaliciousFormat.message === "") {
       alert("please add message");
       return;
@@ -48,38 +49,40 @@ const AddNewFormat: React.FC<AddNewFormatProps> = ({ handleCreateApiCall }) => {
       }}
     >
       <Typography variant="h6">Add New format</Typography>
-      <TextField
-        label="sourceEmail"
-        value={newMaliciousFormat.sourceEmail}
-        onChange={(e) => handleNewItemChange("sourceEmail", e.target.value)}
-        fullWidth
-      />
-      <TextField
-        label="sourcePhone"
-        value={newMaliciousFormat.sourcePhone}
-        onChange={(e) => handleNewItemChange("sourcePhone", e.target.value)}
-        fullWidth
-      />
-      <TextField
-        label="subject"
-        value={newMaliciousFormat.subject}
-        onChange={(e) => handleNewItemChange("subject", e.target.value)}
-        fullWidth
-      />
-      <TextField
-        label="message"
-        value={newMaliciousFormat.message}
-        onChange={(e) => handleNewItemChange("message", e.target.value)}
-        fullWidth
-      />
-      <Button
-        variant="contained"
-        startIcon={<AddIcon />}
-        onClick={handleAddNewFormat}
-        disabled={!newMaliciousFormat.message || !newMaliciousFormat.subject} // Disable button if inputs are empty
-      >
-        Add Item
-      </Button>
+      <form onSubmit={handleAddNewFormat}>
+        <TextField
+          label="sourceEmail"
+          value={newMaliciousFormat.sourceEmail}
+          onChange={(e) => handleNewItemChange("sourceEmail", e.target.value)}
+          fullWidth
+        />
+        <TextField
+          label="sourcePhone"
+          value={newMaliciousFormat.sourcePhone}
+          onChange={(e) => handleNewItemChange("sourcePhone", e.target.value)}
+          fullWidth
+        />
+        <TextField
+          label="subject"
+          value={newMaliciousFormat.subject}
+          onChange={(e) => handleNewItemChange("subject", e.target.value)}
+          fullWidth
+        />
+        <TextField
+          label="message"
+          value={newMaliciousFormat.message}
+          onChange={(e) => handleNewItemChange("message", e.target.value)}
+          fullWidth
+        />
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          type="submit"
+          disabled={!newMaliciousFormat.message || !newMaliciousFormat.subject} // Disable button if inputs are empty
+        >
+          Add Item
+        </Button>
+      </form>
     </Box>
   );
 };
