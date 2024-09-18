@@ -82,25 +82,28 @@ export const useMaliciousFormat = () => {
     }
   };
 
-  const handleCreateApiCall = async (newMaliciousFormat: MaliciousFormat) => {
+  const handleCreateApiCall = async (
+    newMaliciousFormat: Omit<MaliciousFormat, "id">
+  ) => {
     try {
-      console.log("sendiing create api service with:", newMaliciousFormat);
       const response = await api.post(`/malicious`, {
         sourceEmail: newMaliciousFormat.sourceEmail,
         sourcePhone: newMaliciousFormat.sourcePhone,
         message: newMaliciousFormat.message,
         subject: newMaliciousFormat.subject,
       });
-      console.log("responce for create api:", response);
       const serverGeneratedId = response.data._id;
-      newMaliciousFormat.id = serverGeneratedId;
+      const maliciousFormat: MaliciousFormat = {
+        sourceEmail: newMaliciousFormat.sourceEmail,
+        sourcePhone: newMaliciousFormat.sourcePhone,
+        message: newMaliciousFormat.message,
+        subject: newMaliciousFormat.subject,
+        id: serverGeneratedId,
+      };
+      setMaliciousFormats([...maliciousFormats, maliciousFormat]);
     } catch (error) {
-      console.error("Error updating malicious message format:", error);
+      console.error("Error creating new malicious message format:", error);
     }
-    setMaliciousFormats((maliciousFormats) => [
-      ...maliciousFormats,
-      newMaliciousFormat,
-    ]);
   };
 
   return {
