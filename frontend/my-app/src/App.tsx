@@ -9,6 +9,7 @@ import StatisticsPage from "./components/StatisticsPage";
 
 import TrackClick from "./components/TrackClick";
 import "./styles/App.css";
+import MaliciousLinkPage from "./components/MaliciousLinkPage";
 
 function App() {
   return (
@@ -17,10 +18,39 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/main" element={<PrivateRoute><MainPage /></PrivateRoute>} />
-        <Route path="/statistics" element={<PrivateRoute><StatisticsPage /></PrivateRoute>} />
-        <Route path="/track/:trackingId/:contactId" element={<PrivateRoute><TrackClick /></PrivateRoute>} />
-        <Route path="/campaign" element={<PrivateRoute><CampaignPage /></PrivateRoute>} />
+        <Route
+          path="/main"
+          element={
+            <PrivateRoute>
+              <MainPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/statistics"
+          element={
+            <PrivateRoute>
+              <StatisticsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/track/:trackingId/:contactId"
+          element={
+            <PrivateRoute>
+              <TrackClick />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/campaign"
+          element={
+            <PrivateRoute>
+              <CampaignPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/linkMaster" element={<MaliciousLinkPage />} />
       </Routes>
     </Router>
   );
