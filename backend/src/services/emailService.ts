@@ -41,6 +41,8 @@ export const sendPhishingEmail = async (userId: string, contacts: string[], mali
         };
 
         await sgMail.send(msg);
+        contact.emailStatus = "Sent";
+        await contact.save();
       } catch (error) {
         console.error(`Error sending to ${contactId}:`, error);
         errors.push(`Error sending to ${contactId}`);

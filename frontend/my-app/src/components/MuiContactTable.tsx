@@ -272,7 +272,7 @@ export default function FullFeaturedCrudGrid({
       field: "email",
       headerName: "Email",
       type: "string",
-      width: 120,
+      width: 200,
       align: "center",
       headerAlign: "center",
       editable: true,
