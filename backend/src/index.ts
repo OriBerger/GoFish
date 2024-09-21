@@ -6,7 +6,7 @@ import errorMiddleware from "./middlewares/errorMiddleware";
 import router from "./routes/routes";
 
 const app = express();
-const port = process.env.PORT  || 3001;
+const PORT = process.env.PORT  || 3001;
 
 // Connect to MongoDB
 connectDB();
@@ -27,6 +27,6 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

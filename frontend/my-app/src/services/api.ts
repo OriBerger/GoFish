@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an Axios instance with default settings
 const api = axios.create({
-  baseURL: "http://localhost:3001/api", 
+  baseURL: process.env.REACT_APP_API_BASE_URL , 
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,7 +10,7 @@ const api = axios.create({
 //add tocken if exist:
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // Adjust based on where you store the token
+    const token = localStorage.getItem("token"); 
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

@@ -3,8 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import ContactModel from '../models/Contact';
 import MaliciousModel from '../models/Malicious';
 import User from '../models/User';
+require('dotenv').config()
+
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
+
+const CLIENT_URL = process.env.CLIENT_URL;
 
 export const sendPhishingEmail = async (userId: string, contacts: string[], maliciousId: string) => {
   try {
@@ -28,11 +32,11 @@ export const sendPhishingEmail = async (userId: string, contacts: string[], mali
           continue;
         }
 
-        const trackingLink = `${process.env.CLIENT_URL}/track/${trackingId}/${contact._id}`;
+        const trackingLink = `${CLIENT_URL}/track/${trackingId}/${contact._id}`;
         const msg = {
           to: contact.email,
           from: {
-            email: "mailinng.systeem@gmail.com",  // Use the source email from the malicious format
+            email: process.env.GENERIC_EMAIL_ADDRESS || "mailinng.systeem@gmail.com",  // Use the source email from the malicious format
             name: sourceEmail, // Customize name if needed
           },
           subject: subject,
