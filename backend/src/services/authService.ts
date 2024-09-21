@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+require('dotenv').config()
 
 const jwtSecret = process.env.JWT_SECRET || 'secretkey'; 
 
