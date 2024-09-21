@@ -85,10 +85,10 @@ const Statistics: React.FC = () => {
 
   const roles = Array.from(new Set(contacts.map((c) => c.role))).filter(
     (role) => role
-  ) || ["None"];
+  ) || ["All"];
   const departments = Array.from(
     new Set(contacts.map((c) => c.department))
-  ).filter((department) => department) || ["None"];
+  ).filter((department) => department) || ["All"];
 
   const handleRoleChange = (event: SelectChangeEvent<string>) => {
     const role = event.target.value as string;
@@ -158,7 +158,7 @@ const Statistics: React.FC = () => {
           <InputLabel>Role</InputLabel>
           <Select value={selectedRole} onChange={handleRoleChange} label="Role">
             <MenuItem value="">
-              <em>None</em>
+              <em>All</em>
             </MenuItem>
             {roles.map((role) => (
               <MenuItem key={role} value={role}>
@@ -176,7 +176,7 @@ const Statistics: React.FC = () => {
             label="Department"
           >
             <MenuItem value="">
-              <em>None</em>
+              <em>All</em>
             </MenuItem>
             {departments.map((department) => (
               <MenuItem key={department} value={department}>
