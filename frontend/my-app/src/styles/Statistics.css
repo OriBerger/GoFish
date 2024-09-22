@@ -1,0 +1,25 @@
+.statistics-card {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .statistics-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .statistics-chart-container {
+    height: 350px;
+  }
+  
+  .statistics-percentage {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  

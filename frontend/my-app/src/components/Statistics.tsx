@@ -8,6 +8,7 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
+  Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -19,6 +20,7 @@ import {
   Tooltip,
 } from "recharts";
 import api from "../services/api";
+import "../styles/Statistics.css";
 
 const COLORS = {
   "Not Sent": "#0088FE", // Blue
@@ -46,6 +48,7 @@ const Statistics: React.FC = () => {
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
+  const [showOnlySentAndClicked, setShowOnlySentAndClicked] = useState(false); // Toggle state
 
   useEffect(() => {
     const fetchStatisticsData = async () => {
@@ -114,44 +117,41 @@ const Statistics: React.FC = () => {
     countEmailStatuses(filtered);
   };
 
+  const handleToggle = () => {
+    setShowOnlySentAndClicked(!showOnlySentAndClicked);
+  };
+
   if (!data) {
     return <Typography>There is no data yet...</Typography>;
   }
 
-  const chartData = [
-    { name: "Not Sent", value: data.notSent },
-    { name: "Sent", value: data.sent },
-    { name: "Clicked", value: data.clicked },
-  ].filter((entry) => entry.value > 0);
+  // Determine which data to show based on the toggle
+  const chartData = showOnlySentAndClicked
+    ? [
+        { name: "Sent", value: data.sent },
+        { name: "Clicked", value: data.clicked },
+      ]
+    : [
+        { name: "Not Sent", value: data.notSent },
+        { name: "Sent", value: data.sent },
+        { name: "Clicked", value: data.clicked },
+      ];
 
-  const totalEmails = data.notSent + data.sent + data.clicked;
+  const totalSentEmails = data.sent + data.clicked;
   const clickedPercentage =
-    totalEmails > 0 ? ((data.clicked / totalEmails) * 100).toFixed(2) : 0;
+    totalSentEmails > 0
+      ? ((data.clicked / totalSentEmails) * 100).toFixed(2)
+      : 0;
 
   return (
-    <Card
-      sx={{
-        maxWidth: 600,
-        margin: "20px auto",
-        backgroundColor: "#f5f5f5",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        borderRadius: "10px",
-      }}
-    >
+    <Card className="statistics-card">
       <CardContent>
-        <Typography
-          sx={{
-            fontSize: "24px",
-            fontWeight: "bold",
-            textAlign: "center",
-            color: "#333",
-            marginBottom: "20px",
-          }}
-        >
+        <Typography className="statistics-title">
           Phishing Simulation Statistics
         </Typography>
-        <Typography variant="h6" align="center" color="textSecondary">
-          {clickedPercentage}% of your contacts clicked the suspicious link.
+        <Typography variant="h6" className="statistics-percentage">
+          {clickedPercentage}% of your contacts that received the suspicious
+          link clicked on it.
         </Typography>
 
         <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
@@ -186,7 +186,17 @@ const Statistics: React.FC = () => {
           </Select>
         </FormControl>
 
-        <Box sx={{ height: 350 }}>
+        <Button
+          variant="contained"
+          onClick={handleToggle}
+          sx={{ marginTop: "16px" }}
+        >
+          {showOnlySentAndClicked
+            ? "Show All Statistics"
+            : "Show Sent & Clicked Only"}
+        </Button>
+
+        <Box className="statistics-chart-container">
           <ResponsiveContainer>
             <PieChart>
               <Pie
@@ -206,7 +216,7 @@ const Statistics: React.FC = () => {
                 ))}
               </Pie>
               <Tooltip />
-              <Legend verticalAlign="bottom" />{" "}
+              <Legend verticalAlign="bottom" />
             </PieChart>
           </ResponsiveContainer>
         </Box>
