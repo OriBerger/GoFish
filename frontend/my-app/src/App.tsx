@@ -7,9 +7,9 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import StatisticsPage from "./components/StatisticsPage";
 
+import MaliciousLinkPage from "./components/MaliciousLinkPage";
 import TrackClick from "./components/TrackClick";
 import "./styles/App.css";
-import MaliciousLinkPage from "./components/MaliciousLinkPage";
 
 function App() {
   return (
@@ -37,9 +37,7 @@ function App() {
         <Route
           path="/track/:trackingId/:contactId"
           element={
-            <PrivateRoute>
-              <TrackClick />
-            </PrivateRoute>
+            <TrackClick />
           }
         />
         <Route
