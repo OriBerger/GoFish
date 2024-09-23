@@ -36,7 +36,7 @@ export const sendPhishingEmail = async (userId: string, contacts: string[], mali
         const msg = {
           to: contact.email,
           from: {
-            email: process.env.GENERIC_EMAIL_ADDRESS || "mailinng.systeem@gmail.com",  // Use the source email from the malicious format
+            email: process.env.GENERIC_EMAIL_ADDRESS as string,  // Use the source email from the malicious format
             name: sourceEmail, // Customize name if needed
           },
           subject: subject,
