@@ -44,11 +44,35 @@ const TrackClick = () => {
           to learn how to protect yourself from phishing attacks:{" "}
           <a
             className="safe-link"
-            href="https://www.occ.gov/topics/consumers-and-communities/consumer-protection/fraud-resources/phishing-attack-prevention.html"
+            href="https://www.gov.il/he/pages/10signs"
             target="_blank"
             rel="noopener noreferrer"
           >
             Safe Click Here 🛡️
+          </a>
+          <a
+            className="safe-link"
+            href="https://www.gov.il/he/pages/10signs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            1.Safe Click Here 🛡️
+          </a>
+          <a
+            className="safe-link"
+            href="https://www.gov.il/en/pages/recognize_phishing_2711"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            2.Safe Click Here 🛡️
+          </a>
+          <a
+            className="safe-link"
+            href="https://www.gov.il/he/pages/top5_phishing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            3.Safe Click Here 🛡️
           </a>
         </p>
       </div>
