@@ -25,14 +25,15 @@ const SendMessagesButton: React.FC<SendMessageProps> = ({
     }
     try {
       setLoading(true);
-      await api.post("/send-phishing", { contacts, choosenFormatId });
+      // Map contacts to only send contact IDs instead of full objects
+      const contactIds = contacts.map(contact => contact.id);
+      await api.post("/send-phishing", { contacts: contactIds, choosenFormatId });
       alert("Emails sent successfully!");
       navigate("/main");
     } catch (error) {
       console.error("Error sending email:", error);
       alert("Failed to send emails. Please try again.");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };

@@ -30,6 +30,11 @@ const TrackClick = () => {
 
   return (
     <>
+     {clickStatus === null ? (
+        <p>Loading click status...</p>
+      ) : clickStatus ? (
+        <p>You have clicked the phishing link. Stay alert!</p>
+      ) : ("")}
       <div style={{ padding: "20px", textAlign: "center", color: "red" }}>
         <h1>⚠️ You have made the phishing panda mad!</h1>
       </div>
@@ -58,13 +63,6 @@ const TrackClick = () => {
         frameBorder="0"
         allowFullScreen
       ></iframe>
-      {clickStatus === null ? (
-        <p>Loading click status...</p>
-      ) : clickStatus ? (
-        <p>You have clicked the phishing link. Stay alert!</p>
-      ) : (
-        <p>You haven't clicked the phishing link yet. Stay vigilant!</p>
-      )}
     </>
   );
 };
