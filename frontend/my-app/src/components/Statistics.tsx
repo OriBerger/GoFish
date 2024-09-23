@@ -24,14 +24,14 @@ import "../styles/Statistics.css";
 
 const COLORS = {
   "Not Sent": "#0088FE", // Blue
-  Sent: "#4CAF50", // Green
-  Clicked: "#FF5252", // Red
+  "Sent And Not Clicked": "#4CAF50", // Green
+  "Sent And Clicked": "#FF5252", // Red
 } as const; // Using 'as const' to make the keys readonly
 
 interface EmailStatusData {
   notSent: number;
-  sent: number;
-  clicked: number;
+  SentNotClicked: number;
+  SentClicked: number;
 }
 
 interface Contact {
@@ -69,17 +69,17 @@ const Statistics: React.FC = () => {
   const countEmailStatuses = (contacts: Contact[]) => {
     const statusCounts = {
       notSent: 0,
-      sent: 0,
-      clicked: 0,
+      SentNotClicked: 0,
+      SentClicked: 0,
     };
 
     contacts.forEach((contact) => {
       if (contact.emailStatus === "Not Sent") {
         statusCounts.notSent++;
       } else if (contact.emailStatus === "Sent") {
-        statusCounts.sent++;
+        statusCounts.SentNotClicked++;
       } else if (contact.emailStatus === "Clicked") {
-        statusCounts.clicked++;
+        statusCounts.SentClicked++;
       }
     });
 
@@ -128,19 +128,19 @@ const Statistics: React.FC = () => {
   // Determine which data to show based on the toggle
   const chartData = showOnlySentAndClicked
     ? [
-        { name: "Sent", value: data.sent },
-        { name: "Clicked", value: data.clicked },
+        { name: "Sent And Not Clicked", value: data.SentNotClicked },
+        { name: "Sent And Clicked", value: data.SentClicked },
       ]
     : [
         { name: "Not Sent", value: data.notSent },
-        { name: "Sent", value: data.sent },
-        { name: "Clicked", value: data.clicked },
+        { name: "Sent And Not Clicked", value: data.SentNotClicked },
+        { name: "Sent And Clicked", value: data.SentClicked },
       ];
 
-  const totalSentEmails = data.sent + data.clicked;
+  const totalSentEmails = data.SentNotClicked + data.SentClicked;
   const clickedPercentage =
     totalSentEmails > 0
-      ? ((data.clicked / totalSentEmails) * 100).toFixed(2)
+      ? ((data.SentClicked / totalSentEmails) * 100).toFixed(2)
       : 0;
 
   return (
@@ -193,7 +193,7 @@ const Statistics: React.FC = () => {
         >
           {showOnlySentAndClicked
             ? "Show All Statistics"
-            : "Show Sent & Clicked Only"}
+            : "Show Only Sent Links Statistics"}
         </Button>
 
         <Box className="statistics-chart-container">

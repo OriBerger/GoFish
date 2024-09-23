@@ -294,7 +294,7 @@ export default function FullFeaturedCrudGrid({
       type: "singleSelect",
       align: "center",
       headerAlign: "center",
-      valueOptions: ["Manager", "Worker", "Junior"],
+      valueOptions: ["Manager", "Mid-Worker", "Junior", "Senior"],
     },
     {
       field: "department",
@@ -304,7 +304,7 @@ export default function FullFeaturedCrudGrid({
       type: "singleSelect",
       align: "center",
       headerAlign: "center",
-      valueOptions: ["Market", "Finance", "Development"],
+      valueOptions: ["Marketing", "Finance", "R&D", "HR"],
     },
     {
       field: "emailStatus",
