@@ -1,8 +1,8 @@
 import { useState } from "react";
-import api from "../services/api";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Contact } from "../types/appTypes";
+import api from "../services/api";
 import "../styles/AddMaliciousFormat.css"; // Import the CSS
+import { Contact } from "../types/appTypes";
 
 const AddMaliciousFormat = () => {
   const [subject, setSubject] = useState("");
@@ -24,7 +24,7 @@ const AddMaliciousFormat = () => {
       console.error("Error sending email:", error);
       alert("Failed to send emails. Please try again.");
     }
-  };
+  };////
   return (
     <div className="malicious-format">
       <h1>Create Email Campaign</h1>

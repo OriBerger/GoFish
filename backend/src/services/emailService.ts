@@ -31,13 +31,13 @@ export const sendPhishingEmail = async (userId: string, contacts: string[], mali
           errors.push(`Contact not found: ${contactId}`);
           continue;
         }
-
         const trackingLink = `${CLIENT_URL}/track/${trackingId}/${contact._id}`;
         const msg = {
           to: contact.email,
           from: {
             email: process.env.GENERIC_EMAIL_ADDRESS as string,  // Use the source email from the malicious format
-            name: sourceEmail, // Customize name if needed
+            name: sourceEmail.replace(/@/g, "＠"), ///// Replace @ with fullwidth equivalent so the email services will show this name and not the "from" field (by passing the phishing or spam systems of emails)
+
           },
           subject: subject,
           text: `${message}\nClick here: ${trackingLink}`,
