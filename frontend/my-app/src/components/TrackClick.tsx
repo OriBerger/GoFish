@@ -48,14 +48,6 @@ const TrackClick = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Safe Click Here 🛡️
-          </a>
-          <a
-            className="safe-link"
-            href="https://www.gov.il/he/pages/10signs"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
             1.Safe Click Here 🛡️
           </a>
           <a
