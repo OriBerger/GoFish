@@ -193,7 +193,7 @@ const Statistics: React.FC = () => {
         >
           {showOnlySentAndClicked
             ? "Show All Statistics"
-            : "Show Statistics Only On Sent Links"}
+            : "Show Only Sent Links Statistics"}
         </Button>
 
         <Box className="statistics-chart-container">
