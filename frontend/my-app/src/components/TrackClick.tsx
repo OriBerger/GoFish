@@ -1,30 +1,33 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "../styles/TrackClick.css"; // We'll move the styles to a CSS file
 
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const TrackClick = () => {
-  // const { trackingId, contactId } = useParams();
-  // const [clickStatus, setClickStatus] = useState<boolean | null>(null);
+  const { trackingId, contactId } = useParams();
+  const [clickStatus, setClickStatus] = useState<boolean | null>(null);
 
-  // useEffect(() => {
-  //   const fetchClickStatus = async () => {
-  //     if (!trackingId || !contactId) {
-  //       console.error("Missing parameters:", { trackingId, contactId });
-  //       return;
-  //     }
-  //     try {
-  //       const response = await axios.get(
-  //         `${API_BASE_URL}/track/${trackingId}/${contactId}`
-  //       );
-  //       console.log("API response:", response.data);
-  //       setClickStatus(response.data.clicked);
-  //     } catch (error) {
-  //       console.error("Failed to fetch click status:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchClickStatus = async () => {
+      if (!trackingId || !contactId) {
+        console.error("Missing parameters:", { trackingId, contactId });
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/track/${trackingId}/${contactId}`
+        );
+        console.log("API response:", response.data);
+        setClickStatus(response.data.clicked);
+      } catch (error) {
+        console.error("Failed to fetch click status:", error);
+      }
+    };
 
-  //   fetchClickStatus();
-  // }, [trackingId, contactId]);
+    fetchClickStatus();
+  }, [trackingId, contactId]);
 
   return (
     <div className="track-click-container">
