@@ -7,7 +7,6 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import StatisticsPage from "./components/StatisticsPage";
 
-import MaliciousLinkPage from "./components/MaliciousLinkPage";
 import TrackClick from "./components/TrackClick";
 import "./styles/App.css";
 
@@ -48,7 +47,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/linkMaster" element={<MaliciousLinkPage />} />
+        {/* <Route path="/linkMaster" element={<MaliciousLinkPage />} /> */}
       </Routes>
     </Router>
   );
