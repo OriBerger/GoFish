@@ -1,3 +1,4 @@
+/* Style the page */
 body {
   background-color: #f0f0f0; /* Bright grey background */
   margin: 0;
@@ -10,6 +11,11 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
+
+.form-and-message {
+  display: flex; /* Flexbox for side-by-side layout */
+  gap: 20px; /* Space between form and validation message */
 }
 
 .sign-up-form {
@@ -56,9 +62,51 @@ button {
 }
 
 button:disabled {
-  background-color: #0056b3;
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+/* The message box */
+#message {
+  display: block;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 10px; /* Reduced padding for a smaller appearance */
+  border: 3px solid #ccc; /* Optional border for clarity */
+  border-radius: 5px;
+} 
+
+#message h3 {
+  font-size: 16px; 
+  margin-bottom: 20px; 
+}
+
+#message p {
+  font-size: 12px; 
+  padding: 5px 0; 
+}
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -5px;
+  content: "✔";
+}
+
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -5px;
+  content: "✖";
 }

@@ -1,6 +1,6 @@
 // routes/authRoutes.ts
 import express from "express";
-import { login, signup } from "../controllers/authController";
+import { login, signup,validateSignup  } from "../controllers/authController";
 import {
   createContactHandler,
   deleteContactHandler,
@@ -22,7 +22,7 @@ import authenticate from "../middlewares/authMiddleware";
 const router = express.Router();
 
 // Sign-Up Route
-router.post("/signup", signup);
+router.post("/signup", validateSignup, signup);
 
 // Login Route
 router.post("/login", login);

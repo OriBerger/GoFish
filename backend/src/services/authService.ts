@@ -15,7 +15,11 @@ export const registerUser = async (email: string, password: string) => {
     // Create and save new user
     const newUser = new User({ email, password });
     await newUser.save();
-    return { message: "User registered successfully!" };
+    // Generate token upon registration
+    const token = jwt.sign({ userId: newUser._id, email: newUser.email }, jwtSecret, {
+      expiresIn: "1h",
+    });
+    return { message: "User registered successfully!", token };
   } catch (error) {
     throw new Error((error as Error).message || "An unexpected error occurred");
   }
