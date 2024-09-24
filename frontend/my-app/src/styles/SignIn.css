@@ -62,3 +62,8 @@ button:disabled {
 button:hover {
   background-color: #0056b3;
 }
+.signup-message {
+  margin-top: 20px; /* Adds some space above the message */
+  text-align: center; /* Center-aligns the text */
+}
+

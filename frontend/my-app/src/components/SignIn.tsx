@@ -61,6 +61,19 @@ const SignIn: React.FC = () => {
         </button>
       </form>
       <BackToHomepageButton />
+      {/* Add the message at the end */}
+      <div className="signup-message">
+        <p>
+          Don't have an account?{" "}
+          <a
+            href="/signup"
+            className="text-primary ng-binding"
+            style={{ cursor: "pointer" }}
+          >
+            Sign Up
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
