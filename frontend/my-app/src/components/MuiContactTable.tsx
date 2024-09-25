@@ -54,7 +54,7 @@ function EditToolbar(props: EditToolbarProps) {
       phone: "",
       department: "",
       role: "",
-      emailStatus: "Not Sent",
+      emailStatus: "Not sent",
       isNew: true,
     };
 
@@ -91,7 +91,7 @@ export default function FullFeaturedCrudGrid({
       const response = await api.get(`/contacts`, {});
       const contacts = response.data.contacts.map((contact: any) => ({
         id: contact._id, // Use _id as id
-        emailStatus: contact.emailStatus || "Not Sent", // Default to 'Not Sent' if emailStatus is not set
+        emailStatus: contact.emailStatus || "Not sent", // Default to 'Not sent' if emailStatus is not set
         ...contact,
       }));
       setRows(contacts);
@@ -185,10 +185,10 @@ export default function FullFeaturedCrudGrid({
       if (newRow.isNew) {
         // Call API to create a new contact
 
-        const newContactName = newRow.name === "" ? "new contact" : newRow.name;
-        if (newContactName === "new contact") {
+        const newContactName = newRow.name === "" ? "New contact" : newRow.name;
+        if (newContactName === "New contact") {
           alert(
-            "you must provide contact name, default name is set to new contact."
+            "You must provide contact name, default name is set to 'New contact'."
           );
         }
         const response = await api.post(`/contacts`, {
@@ -197,7 +197,7 @@ export default function FullFeaturedCrudGrid({
           phone: newRow.phone,
           role: newRow.role,
           department: newRow.department,
-          emailStatus: "Not Sent", // Save default status to the DB
+          emailStatus: "Not sent", // Save default status to the DB
         });
 
         // Extract the server-generated ID from the response
@@ -208,7 +208,7 @@ export default function FullFeaturedCrudGrid({
           ...newRow,
           name: newContactName,
           id: serverGeneratedId,
-          emailStatus: "Not Sent", // Now show the email status as Not Sent
+          emailStatus: "Not sent", // Now show the email status as Not sent
           isNew: false,
         };
 
@@ -259,7 +259,7 @@ export default function FullFeaturedCrudGrid({
     {
       field: "name",
       headerName: "Name",
-      width: 120,
+      width: 165,
       editable: true,
       align: "center",
       headerAlign: "center",
@@ -272,7 +272,7 @@ export default function FullFeaturedCrudGrid({
       field: "email",
       headerName: "Email",
       type: "string",
-      width: 200,
+      width: 210,
       align: "center",
       headerAlign: "center",
       editable: true,
@@ -281,7 +281,7 @@ export default function FullFeaturedCrudGrid({
       field: "phone",
       headerName: "Phone",
       type: "string",
-      width: 120,
+      width: 165,
       align: "center",
       headerAlign: "center",
       editable: true,
@@ -289,7 +289,7 @@ export default function FullFeaturedCrudGrid({
     {
       field: "role",
       headerName: "Role",
-      width: 120,
+      width: 165,
       editable: true,
       type: "singleSelect",
       align: "center",
@@ -299,7 +299,7 @@ export default function FullFeaturedCrudGrid({
     {
       field: "department",
       headerName: "Department",
-      width: 150,
+      width: 165,
       editable: true,
       type: "singleSelect",
       align: "center",
@@ -308,8 +308,8 @@ export default function FullFeaturedCrudGrid({
     },
     {
       field: "emailStatus",
-      headerName: "emailStatus",
-      width: 120,
+      headerName: "Email status",
+      width: 165,
       align: "center",
       headerAlign: "center",
       renderCell: (params) => {
@@ -324,7 +324,7 @@ export default function FullFeaturedCrudGrid({
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      width: 100,
+      width: 120,
       cellClassName: "actions",
       align: "center",
       headerAlign: "center",

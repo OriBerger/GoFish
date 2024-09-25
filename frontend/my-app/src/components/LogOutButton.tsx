@@ -14,7 +14,7 @@ const LogOutButton = () => {
       onClick={handleLogout}
       className="log-out-button" // Apply the CSS class
     >
-      Log Out
+      Log out
     </button>
   );
 };

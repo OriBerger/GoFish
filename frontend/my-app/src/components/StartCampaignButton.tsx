@@ -22,7 +22,7 @@ const StartCampaignButton: React.FC<StartCampaignButtonProps> = ({
 
   return (
     <button onClick={handleStartCampaign} className="start-campaign-button">
-      Start Campaign
+      Start campaign
     </button>
   );
 };

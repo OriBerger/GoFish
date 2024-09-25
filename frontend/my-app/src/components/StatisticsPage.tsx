@@ -6,7 +6,7 @@ import Statistics from "./Statistics";
 const StatisticsPage: React.FC = () => {
   return (
     <div className="statistics-container">
-      <h1>Welcome to the Statistics Page!</h1>
+      <h1>Statistics page</h1>
       <div style={{ display: "flex" }}>
         <div style={{ flex: 3, border: "1px solid darkred" }}>
           <Statistics />

@@ -3,5 +3,5 @@
   flex: 4; /* Make components take up equal width */
   padding: 20px;
   box-sizing: border-box; 
-  padding-top: 10px;
+  padding-top:8px;
 }

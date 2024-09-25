@@ -20,7 +20,6 @@ import React, { useEffect, useState } from "react";
 //import AddIcon from "@mui/icons-material/Add";
 import "../styles/MaliciousList.css"; // Import the CSS
 import { MaliciousFormat } from "../types/appTypes";
-import { useMaliciousFormat } from "./MaliciousListHook";
 
 type MaliciousListProps = {
   maliciousFormats: MaliciousFormat[];
@@ -95,124 +94,128 @@ const MaliciousList: React.FC<MaliciousListProps> = ({
   };
 
   return (
-    <div className="malicious-history-list">
-      <h2>choose a format or create a new one</h2>
-      <List>
-        {maliciousFormats.map((maliciousFormat: MaliciousFormat) => (
-          <ListItem key={maliciousFormat.id} disablePadding>
-            <Accordion sx={{ flexGrow: 1, flex: 7 }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={maliciousFormat.id === choosenFormatId}
-                      onChange={() => {
-                        setChoosenFormatId(maliciousFormat.id);
-                        console.log("Selected Format ID: ", maliciousFormat.id);
-                      }}
-                      inputProps={{ "aria-label": "controlled" }}
-                    />
-                  }
-                  label=""
-                  onClick={(event) => event.stopPropagation()}
+<div className="malicious-history-list">
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "flex-start", // Aligns the text to the left
+      mb: -1, // Optional: margin-bottom for spacing between title and list
+    }}
+  >
+    <h2>Choose a format or create a new one:</h2>
+  </Box>
+  <List>
+    {maliciousFormats.map((maliciousFormat: MaliciousFormat) => (
+      <ListItem key={maliciousFormat.id} disablePadding>
+        <Accordion sx={{ flexGrow: 1, flex: 7 }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={maliciousFormat.id === choosenFormatId}
+                  onChange={() => {
+                    setChoosenFormatId(maliciousFormat.id);
+                    console.log("Selected Format ID: ", maliciousFormat.id);
+                  }}
+                  inputProps={{ "aria-label": "controlled" }}
                 />
-                {maliciousFormat.id === formatBeingEdit ? (
-                  <>
-                    <TextField
-                      label="Source Email"
-                      value={maliciousFormatsEditingFields.sourceEmail}
-                      onChange={(e) =>
-                        handleFieldChange("sourceEmail", e.target.value)
-                      }
-                      onClick={(event) => event.stopPropagation()}
-                      fullWidth
-                      sx={{ verticalAlign: "middle" }}
-                    />
-                    <TextField
-                      label="Source Phone"
-                      value={maliciousFormatsEditingFields.sourcePhone}
-                      onChange={(e) =>
-                        handleFieldChange("sourcePhone", e.target.value)
-                      }
-                      onClick={(event) => event.stopPropagation()}
-                      fullWidth
-                      sx={{ verticalAlign: "middle" }}
-                    />
-                    <TextField
-                      label="Subject"
-                      value={maliciousFormatsEditingFields.subject}
-                      onChange={(e) =>
-                        handleFieldChange("subject", e.target.value)
-                      }
-                      onClick={(event) => event.stopPropagation()}
-                      fullWidth
-                      sx={{ verticalAlign: "middle" }}
-                    />
-                    <TextField
-                      label="Message"
-                      value={maliciousFormatsEditingFields.message}
-                      onChange={(e) =>
-                        handleFieldChange("message", e.target.value)
-                      }
-                      onClick={(event) => event.stopPropagation()}
-                      fullWidth
-                      sx={{ verticalAlign: "middle" }}
-                    />
-                  </>
-                ) : (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 2,
-                    }}
-                  >
-                    <Typography variant="body1">
-                      Email: {maliciousFormat.sourceEmail}
-                    </Typography>
-                    <Typography>Subject: {maliciousFormat.subject}</Typography>
-                    <Typography>
-                      Phone: {maliciousFormat.sourcePhone}
-                    </Typography>
-                  </Box>
-                )}
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>Message: {maliciousFormat.message}</Typography>
-              </AccordionDetails>
-            </Accordion>
-            <ListItemButton sx={{ flex: 1 }}>
-              <Box>
-                {maliciousFormat.id === formatBeingEdit ? (
-                  <IconButton
-                    disabled={loading}
-                    onClick={() => handleEditSave(maliciousFormat.id)}
-                  >
-                    <CheckIcon />
-                  </IconButton>
-                ) : (
-                  <IconButton
-                    disabled={loading}
-                    onClick={() => handleEditClick(maliciousFormat)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-                <IconButton
-                  disabled={loading}
-                  onClick={() => handleDelete(maliciousFormat.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+              }
+              label=""
+              onClick={(event) => event.stopPropagation()}
+            />
+            {maliciousFormat.id === formatBeingEdit ? (
+              <>
+                <TextField
+                  label="Source Email"
+                  value={maliciousFormatsEditingFields.sourceEmail}
+                  onChange={(e) =>
+                    handleFieldChange("sourceEmail", e.target.value)
+                  }
+                  onClick={(event) => event.stopPropagation()}
+                  fullWidth
+                  sx={{ verticalAlign: "middle" }}
+                />
+                <TextField
+                  label="Source Phone"
+                  value={maliciousFormatsEditingFields.sourcePhone}
+                  onChange={(e) =>
+                    handleFieldChange("sourcePhone", e.target.value)
+                  }
+                  onClick={(event) => event.stopPropagation()}
+                  fullWidth
+                  sx={{ verticalAlign: "middle" }}
+                />
+                <TextField
+                  label="Subject"
+                  value={maliciousFormatsEditingFields.subject}
+                  onChange={(e) =>
+                    handleFieldChange("subject", e.target.value)
+                  }
+                  onClick={(event) => event.stopPropagation()}
+                  fullWidth
+                  sx={{ verticalAlign: "middle" }}
+                />
+                <TextField
+                  label="Message"
+                  value={maliciousFormatsEditingFields.message}
+                  onChange={(e) =>
+                    handleFieldChange("message", e.target.value)
+                  }
+                  onClick={(event) => event.stopPropagation()}
+                  fullWidth
+                  sx={{ verticalAlign: "middle" }}
+                />
+              </>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                }}
+              >
+                <Typography variant="body1">
+                  Email: {maliciousFormat.sourceEmail}
+                </Typography>
+                <Typography>Phone: {maliciousFormat.sourcePhone}</Typography>
+                <Typography>Subject: {maliciousFormat.subject}</Typography>
               </Box>
-            </ListItemButton>
-          </ListItem>
-        ))}
-        {/* <ListItem>
-            
-        </ListItem> */}
-      </List>
-    </div>
+            )}
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>Message: {maliciousFormat.message}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        <ListItemButton sx={{ flex: 1 }}>
+          <Box>
+            {maliciousFormat.id === formatBeingEdit ? (
+              <IconButton
+                disabled={loading}
+                onClick={() => handleEditSave(maliciousFormat.id)}
+              >
+                <CheckIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                disabled={loading}
+                onClick={() => handleEditClick(maliciousFormat)}
+              >
+                <EditIcon />
+              </IconButton>
+            )}
+            <IconButton
+              disabled={loading}
+              onClick={() => handleDelete(maliciousFormat.id)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        </ListItemButton>
+      </ListItem>
+    ))}
+  </List>
+</div>
+
   );
 };
 

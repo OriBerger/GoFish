@@ -1,14 +1,14 @@
 import {
   Box,
+  Button,
   Card,
   CardContent,
-  Typography,
-  MenuItem,
-  Select,
   FormControl,
   InputLabel,
+  MenuItem,
+  Select,
   SelectChangeEvent,
-  Button,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -23,9 +23,9 @@ import api from "../services/api";
 import "../styles/Statistics.css";
 
 const COLORS = {
-  "Not Sent": "#0088FE", // Blue
-  "Sent And Not Clicked": "#4CAF50", // Green
-  "Sent And Clicked": "#FF5252", // Red
+  "Not sent": "#0088FE", // Blue
+  "Sent and not clicked": "#4CAF50", // Green
+  "Sent and clicked": "#FF5252", // Red
 } as const; // Using 'as const' to make the keys readonly
 
 interface EmailStatusData {
@@ -74,7 +74,7 @@ const Statistics: React.FC = () => {
     };
 
     contacts.forEach((contact) => {
-      if (contact.emailStatus === "Not Sent") {
+      if (contact.emailStatus === "Not sent") {
         statusCounts.notSent++;
       } else if (contact.emailStatus === "Sent") {
         statusCounts.SentNotClicked++;
@@ -128,13 +128,13 @@ const Statistics: React.FC = () => {
   // Determine which data to show based on the toggle
   const chartData = showOnlySentAndClicked
     ? [
-        { name: "Sent And Not Clicked", value: data.SentNotClicked },
-        { name: "Sent And Clicked", value: data.SentClicked },
+        { name: "Sent and not clicked", value: data.SentNotClicked },
+        { name: "Sent and clicked", value: data.SentClicked },
       ]
     : [
-        { name: "Not Sent", value: data.notSent },
-        { name: "Sent And Not Clicked", value: data.SentNotClicked },
-        { name: "Sent And Clicked", value: data.SentClicked },
+        { name: "Not sent", value: data.notSent },
+        { name: "Sent and not clicked", value: data.SentNotClicked },
+        { name: "Sent and clicked", value: data.SentClicked },
       ];
 
   const totalSentEmails = data.SentNotClicked + data.SentClicked;
@@ -147,7 +147,7 @@ const Statistics: React.FC = () => {
     <Card className="statistics-card">
       <CardContent>
         <Typography className="statistics-title">
-          Phishing Simulation Statistics
+          Phishing simulation statistics
         </Typography>
         <Typography variant="h6" className="statistics-percentage">
           {clickedPercentage}% of your contacts that received the suspicious
@@ -192,8 +192,8 @@ const Statistics: React.FC = () => {
           sx={{ marginTop: "16px" }}
         >
           {showOnlySentAndClicked
-            ? "Show All Statistics"
-            : "Show Only Sent Links Statistics"}
+            ? "Show all statistics"
+            : "Show only sent links statistics"}
         </Button>
 
         <Box className="statistics-chart-container">
