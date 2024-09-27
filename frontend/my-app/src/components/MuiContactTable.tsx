@@ -25,8 +25,6 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { Contact } from "../types/appTypes";
 
-//const roles = ["Manager", "Worker", "Junior"];
-//const department = ["Market", "Finance", "Development"];
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
@@ -102,6 +100,13 @@ export default function FullFeaturedCrudGrid({
 
   useEffect(() => {
     fetchContacts();
+
+    // Set interval to fetch contacts every 180 seconds (180000 ms) , 3 minutes.
+    const intervalId = setInterval(fetchContacts, 180000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+
   }, []);
 
   const navigate = useNavigate(); // Use navigate to redirect
