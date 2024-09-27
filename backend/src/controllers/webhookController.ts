@@ -8,7 +8,7 @@ export const sendgridWebhookHandler = async (req: Request, res: Response) => {
   try {
     // Loop through the events array sent by SendGrid
     for (const event of events) {
-      if (event.event === 'click' || event.event === 'reply') {
+      if (event.event === 'click') {
         const contactId = event.contact_id; // Assuming you send contact ID as metadata
         const contact = await ContactModel.findById(contactId);
 
