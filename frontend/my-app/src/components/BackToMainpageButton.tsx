@@ -9,7 +9,7 @@ const BackToMainpageButton = () => {
       onClick={() => navigate("/main")}
       className="back-to-mainpage-button" // Apply the CSS class
     >
-      Back to Mainpage
+      Back to main page
     </button>
   );
 };

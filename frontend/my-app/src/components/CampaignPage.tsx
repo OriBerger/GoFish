@@ -5,8 +5,8 @@ import { Contact } from "../types/appTypes";
 import AddNewFormat from "./AddNewFormat";
 import BackToMainpageButton from "./BackToMainpageButton";
 import MaliciousList from "./MaliciousList";
-import SendMessagesButton from "./SendMessagesButton";
 import { useMaliciousFormat } from "./MaliciousListHook";
+import SendMessagesButton from "./SendMessagesButton";
 
 const CampaignPage: React.FC = () => {
   const [choosenFormatId, setChoosenFormatId] = useState<string | null>(null);
@@ -22,7 +22,7 @@ const CampaignPage: React.FC = () => {
   return (
     <div>
       <BackToMainpageButton />
-      <h1>Create Email Campaign</h1>
+      <h1>Create email campaign</h1>
       <div className="malicious-options">
         <MaliciousList
           maliciousFormats={maliciousFormats}

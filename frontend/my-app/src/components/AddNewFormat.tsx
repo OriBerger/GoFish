@@ -2,7 +2,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { useMaliciousFormat } from "./MaliciousListHook";
 import { MaliciousFormat } from "../types/appTypes";
 
 type AddNewFormatProps = {
@@ -48,32 +47,40 @@ const AddNewFormat: React.FC<AddNewFormatProps> = ({ handleCreateApiCall }) => {
         paddingRight: "40px",
       }}
     >
-      <Typography variant="h6">Add New format</Typography>
+      <Typography variant="h6">Add new format:</Typography>
       <form onSubmit={handleAddNewFormat}>
-        <TextField
-          label="sourceEmail"
-          value={newMaliciousFormat.sourceEmail}
-          onChange={(e) => handleNewItemChange("sourceEmail", e.target.value)}
-          fullWidth
-        />
-        <TextField
-          label="sourcePhone"
-          value={newMaliciousFormat.sourcePhone}
-          onChange={(e) => handleNewItemChange("sourcePhone", e.target.value)}
-          fullWidth
-        />
-        <TextField
-          label="subject"
-          value={newMaliciousFormat.subject}
-          onChange={(e) => handleNewItemChange("subject", e.target.value)}
-          fullWidth
-        />
-        <TextField
-          label="message"
-          value={newMaliciousFormat.message}
-          onChange={(e) => handleNewItemChange("message", e.target.value)}
-          fullWidth
-        />
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            label="Email"
+            value={newMaliciousFormat.sourceEmail}
+            onChange={(e) => handleNewItemChange("sourceEmail", e.target.value)}
+            fullWidth
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            label="Phone"
+            value={newMaliciousFormat.sourcePhone}
+            onChange={(e) => handleNewItemChange("sourcePhone", e.target.value)}
+            fullWidth
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            label="Subject"
+            value={newMaliciousFormat.subject}
+            onChange={(e) => handleNewItemChange("subject", e.target.value)}
+            fullWidth
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            label="Message"
+            value={newMaliciousFormat.message}
+            onChange={(e) => handleNewItemChange("message", e.target.value)}
+            fullWidth
+          />
+        </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -85,6 +92,7 @@ const AddNewFormat: React.FC<AddNewFormatProps> = ({ handleCreateApiCall }) => {
       </form>
     </Box>
   );
+  
 };
 
 export default AddNewFormat;

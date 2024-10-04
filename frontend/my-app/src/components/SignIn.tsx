@@ -35,7 +35,7 @@ const SignIn: React.FC = () => {
 
   return (
     <div className="sign-in-container">
-      <h2>Sign In</h2>
+      <h2>Sign in</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSignIn} className="sign-in-form">
         <div className="sign-in-form-group">
@@ -57,7 +57,7 @@ const SignIn: React.FC = () => {
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? "Signing In..." : "Sign In"}
+          {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
       <BackToHomepageButton />
@@ -70,7 +70,7 @@ const SignIn: React.FC = () => {
             className="text-primary ng-binding"
             style={{ cursor: "pointer" }}
           >
-            Sign Up
+            Sign up
           </a>
         </p>
       </div>

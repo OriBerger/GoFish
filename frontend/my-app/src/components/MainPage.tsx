@@ -10,7 +10,7 @@ const MainPage: React.FC = () => {
 
   return (
     <div className="mainpage-container">
-      <h1>Welcome to the Main Page!</h1>
+      <h1>Main page</h1>
       <FullFeaturedCrudGrid setSelectedContacts={setSelectedContacts} />
       <StartCampaignButton selectedContacts={selectedContacts} />
       <LogOutButton />

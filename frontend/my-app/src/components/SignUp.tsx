@@ -61,7 +61,7 @@ const SignUp: React.FC = () => {
 
   return (
     <div className="sign-up-container">
-      <h2>Sign Up</h2>
+      <h2>Sign up</h2>
       <div className="form-and-message">
         <form onSubmit={handleSignUp} className="sign-up-form">
           <div className="sign-up-form-group">
@@ -85,7 +85,7 @@ const SignUp: React.FC = () => {
           </div>
 
           <div className="sign-up-form-group">
-            <label>Confirm Password:</label>
+            <label>Confirm password:</label>
             <input
               type="password"
               value={confirmPassword}
@@ -95,7 +95,7 @@ const SignUp: React.FC = () => {
           </div>
 
           <button type="submit" disabled={loading || !isPasswordValid}>
-            {loading ? "Signing Up..." : "Sign Up"}
+            {loading ? "Signing up..." : "Sign up"}
           </button>
         </form>
 
@@ -130,7 +130,7 @@ const SignUp: React.FC = () => {
             className="text-primary ng-binding"
             style={{ cursor: "pointer" }}
           >
-            Sign In
+            Sign in
           </a>
         </p>
       </div>

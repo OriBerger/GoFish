@@ -18,7 +18,7 @@ const contactSchema: Schema<IContact> = new Schema({
   phone: { type: String, required: false },
   department: { type: String, required: false },
   role: {type: String, required: false},
-  emailStatus: { type: String, default: 'Not Sent' }
+  emailStatus: { type: String, default: 'Not sent' }
 });
 
 // Create the Mongoose model
