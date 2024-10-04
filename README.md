@@ -6,12 +6,12 @@ You can view the live project here: **[Go Fish on Render](https://gofish-wis3.on
 
 ## Table of Contents
 
-1. [Overview] (#overview)
-2. [Features] (#features)
-3. [Live Demo] (#live-demo)
-4. [Installation] (#installation)
-5. [Technologies Used] (#technologies-used)
-6. [License] (#license)
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Live Demo](#live-demo)
+4. [Installation](#installation)
+5. [Technologies Used](#technologies-used)
+6. [License](#license)
 
 ## Overview
 
