@@ -61,7 +61,7 @@ Make sure you have the following installed:
    ```
 3. Create a .env file in the backend folder with the following contents:
 
-   ````bash
+   ```bash
    # Client URL
    CLIENT_URL='http://localhost:3000'
 
@@ -77,28 +77,34 @@ Make sure you have the following installed:
    # Email configuration for the system
    GENERIC_EMAIL_ADDRESS="your_email_here"
    GENERIC_EMAIL_ADDRESS_PASSWORD="your_email_password_here"
-   4. Start the backend server:
+   ```
+
+4. Start the backend server:
    ```bash
    npm run dev
-   ````
+   ```
 
 ### Frontend Setup
 
 1. Navigate to the frontend directory and install dependencies:
 
-   ````bash
+   ```bash
    cd frontend/my-app
    npm install
-   2. Create a .env file in the frontend folder with the following contents:
+   ```
+
+2. Create a .env file in the frontend folder with the following contents:
    ```bash
    REACT_APP_API_BASE_URL="http://localhost:3001/api"
    REACT_APP_BASE_URL="http://localhost:3001"
-   3. Start the frontend server:
+   ```
+3. Start the frontend server:
+
    ```bash
    npm start
-   ````
+   ```
 
-   4. visit http://localhost:3000 in your browser to view the app.
+4. visit http://localhost:3000 in your browser to view the app.
 
 ## Technologies Used
 
